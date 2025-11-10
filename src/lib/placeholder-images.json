@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero",
+      "description": "A lush green field under a clear blue sky",
+      "imageUrl": "https://images.unsplash.com/photo-1571341514065-b710ff6c07d4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxncmVlbiUyMGZpZWxkfGVufDB8fHx8MTc2Mjc4NDI3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "green field"
+    },
+    {
+      "id": "community-post-1",
+      "description": "A close-up of wheat grains",
+      "imageUrl": "https://images.unsplash.com/photo-1664673788764-de584643c137?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx3aGVhdCUyMGdyYWlufGVufDB8fHx8MTc2MjcyMjE5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wheat grain"
+    },
+    {
+      "id": "community-post-2",
+      "description": "A tractor in a field",
+      "imageUrl": "https://images.unsplash.com/photo-1507662228758-08d030c4820b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmYXJtJTIwdHJhY3RvcnxlbnwwfHx8fDE3NjI3ODQyNzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "farm tractor"
+    },
+    {
+      "id": "user-avatar-1",
+      "description": "A smiling farmer",
+      "imageUrl": "https://images.unsplash.com/photo-1719154718540-8ef3d94e7712?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzbWlsaW5nJTIwZmFybWVyfGVufDB8fHx8MTc2MjY5MTUyM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smiling farmer"
+    },
+    {
+      "id": "user-avatar-2",
+      "description": "A person in a hat",
+      "imageUrl": "https://images.unsplash.com/photo-1600095079058-d6db93225b44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVyc29uJTIwaGF0fGVufDB8fHx8MTc2MjcyNjE4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person hat"
+    },
+    {
+      "id": "user-avatar-3",
+      "description": "A woman in a field",
+      "imageUrl": "https://images.unsplash.com/photo-1625832954421-e47814404ab0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3b21hbiUyMGZpZWxkfGVufDB8fHx8MTc2Mjc1ODE1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman field"
+    }
+  ]
 }
