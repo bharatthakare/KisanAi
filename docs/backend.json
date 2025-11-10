@@ -1,0 +1,303 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the KisanAI application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The user's full name."
+        },
+        "mobile": {
+          "type": "string",
+          "description": "The user's mobile phone number."
+        },
+        "language": {
+          "type": "string",
+          "description": "The user's preferred language (e.g., English, Hindi, Marathi)."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "mobile",
+        "language"
+      ]
+    },
+    "CommunityPost": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CommunityPost",
+      "type": "object",
+      "description": "Represents a post in the community feed.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CommunityPost entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N CommunityPost)"
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the post."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp indicating when the post was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "content",
+        "timestamp"
+      ]
+    },
+    "CommunityComment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CommunityComment",
+      "type": "object",
+      "description": "Represents a comment on a community post.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CommunityComment entity."
+        },
+        "postId": {
+          "type": "string",
+          "description": "Reference to CommunityPost. (Relationship: CommunityPost 1:N CommunityComment)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N CommunityComment)"
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the comment."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp indicating when the comment was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "postId",
+        "userId",
+        "content",
+        "timestamp"
+      ]
+    },
+    "MarketPrice": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "MarketPrice",
+      "type": "object",
+      "description": "Represents the market price of a crop.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the MarketPrice entity."
+        },
+        "crop": {
+          "type": "string",
+          "description": "The name of the crop."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the crop."
+        },
+        "unit": {
+          "type": "string",
+          "description": "The unit of measurement for the price (e.g., kg, tonne)."
+        },
+        "market": {
+          "type": "string",
+          "description": "The market where the price is recorded."
+        },
+        "trend": {
+          "type": "string",
+          "description": "The price trend (up, down, stable)."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp indicating when the price was recorded.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "crop",
+        "price",
+        "unit",
+        "market",
+        "trend",
+        "timestamp"
+      ]
+    },
+    "WeatherRecord": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WeatherRecord",
+      "type": "object",
+      "description": "Represents a weather record for a specific location.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the WeatherRecord entity."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Latitude of the location."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Longitude of the location."
+        },
+        "temperature": {
+          "type": "number",
+          "description": "Temperature in Celsius."
+        },
+        "humidity": {
+          "type": "number",
+          "description": "Humidity percentage."
+        },
+        "windSpeed": {
+          "type": "number",
+          "description": "Wind speed in km/h."
+        },
+        "condition": {
+          "type": "string",
+          "description": "Weather condition (e.g., Rain, Clouds, Clear)."
+        },
+        "city": {
+          "type": "string",
+          "description": "The name of the city."
+        },
+        "country": {
+          "type": "string",
+          "description": "The name of the country."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp indicating when the weather data was recorded.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "latitude",
+        "longitude",
+        "temperature",
+        "humidity",
+        "windSpeed",
+        "condition",
+        "city",
+        "country",
+        "timestamp"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles. Access is restricted to the authenticated user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/community_posts/{communityPostId}",
+        "definition": {
+          "entityName": "CommunityPost",
+          "schema": {
+            "$ref": "#/backend/entities/CommunityPost"
+          },
+          "description": "Stores community posts. Includes the userId of the author to allow for filtering posts by user.",
+          "params": [
+            {
+              "name": "communityPostId",
+              "description": "The unique identifier for the community post."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/community_posts/{communityPostId}/comments/{communityCommentId}",
+        "definition": {
+          "entityName": "CommunityComment",
+          "schema": {
+            "$ref": "#/backend/entities/CommunityComment"
+          },
+          "description": "Stores comments related to a specific community post. Includes the userId of the author to allow for filtering comments by user.",
+          "params": [
+            {
+              "name": "communityPostId",
+              "description": "The unique identifier for the community post."
+            },
+            {
+              "name": "communityCommentId",
+              "description": "The unique identifier for the community comment."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/market_prices/{marketPriceId}",
+        "definition": {
+          "entityName": "MarketPrice",
+          "schema": {
+            "$ref": "#/backend/entities/MarketPrice"
+          },
+          "description": "Stores market price data.",
+          "params": [
+            {
+              "name": "marketPriceId",
+              "description": "The unique identifier for the market price record."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/weather_records/{weatherRecordId}",
+        "definition": {
+          "entityName": "WeatherRecord",
+          "schema": {
+            "$ref": "#/backend/entities/WeatherRecord"
+          },
+          "description": "Stores weather records.",
+          "params": [
+            {
+              "name": "weatherRecordId",
+              "description": "The unique identifier for the weather record."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to ensure Authorization Independence, DBAC, and support secure list operations (QAPs). It prioritizes path-based ownership for private user data and uses denormalization where necessary to avoid `get()` calls in security rules.  Community Post and Comment are leveraging hierarchical paths. This approach supports atomic operations and simplifies security rules.\n\n1.  **Users Collection:** Stores user profiles. Access is restricted to the authenticated user.\n2.  **Community Posts Collection:** Stores posts created by users. The `userId` is stored within each document, allowing for easy querying of posts created by a specific user. No authorization context needs to be denormalized because there are no additional complex rules. Posts are stored in a top-level collection to allow for listing.\n3.  **Community Comments Subcollection:** Stores comments related to specific posts. The `userId` is stored within each comment document. No authorization context needs to be denormalized because there are no additional complex rules. Each comment includes the `postId` for easy querying. By using a subcollection, we can perform efficient queries for all comments related to a specific post.\n4.  **Market Prices Collection:** Stores market price data.  No authorization context needs to be denormalized because there are no additional complex rules. Data can be read publicly. Data is stored in a top-level collection to allow for listing.\n5.  **Weather Records Collection:** Stores weather data. No authorization context needs to be denormalized because there are no additional complex rules. Data can be read publicly. Data is stored in a top-level collection to allow for listing.\n\nThis structure supports secure list operations because each collection has a homogeneous security posture. Authorization is determined by the `request.auth.uid` and, where applicable, the `userId` stored within each document. Denormalization eliminates the need for `get()` calls in security rules, enabling atomic operations and preventing rule-based filtering."
+  }
+}
