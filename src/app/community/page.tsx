@@ -75,7 +75,7 @@ export default function CommunityPage() {
                 <Button variant="ghost" size="sm" className="flex items-center gap-2" asChild>
                   <Link href={`/community/${post.id}`}>
                     <MessageCircle className="h-4 w-4 text-blue-500" />
-                    {post.comments} Comments
+                    {post.comments.length} Comments
                   </Link>
                 </Button>
               </CardFooter>

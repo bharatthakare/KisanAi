@@ -1,5 +1,32 @@
-import type { MarketPrice, CommunityPost } from './types';
+import type { MarketPrice, CommunityPost, Comment } from './types';
 import { placeholderImages } from './placeholder-images';
+
+const comments: Comment[] = [
+  {
+    id: 'c1',
+    author: 'Sunita Devi',
+    authorAvatar: placeholderImages.find(p => p.id === 'user-avatar-3')?.imageUrl || '',
+    timestamp: '1 hour ago',
+    content: 'That\'s great to hear, Ramesh! I\'ve had good results with vermicompost. It really improves soil structure.',
+    replies: [
+      {
+        id: 'r1',
+        author: 'Ramesh Patel',
+        authorAvatar: placeholderImages.find(p => p.id === 'user-avatar-1')?.imageUrl || '',
+        timestamp: '30 minutes ago',
+        content: 'Thanks, Sunita! I will look into vermicompost for the next season.'
+      }
+    ]
+  },
+  {
+    id: 'c2',
+    author: 'Vijay Kumar',
+    authorAvatar: placeholderImages.find(p => p.id === 'user-avatar-2')?.imageUrl || '',
+    timestamp: '45 minutes ago',
+    content: 'Have you tried neem-based fertilizers? They also act as a mild pesticide.',
+  },
+];
+
 
 export const marketPrices: MarketPrice[] = [
   { id: '1', crop: 'Wheat', price: 2050, unit: 'Quintal', market: 'Nagpur', trend: 'up', timestamp: '2024-07-30T10:00:00Z', lat: 21.1458, lon: 79.0882 },
@@ -22,7 +49,7 @@ export const communityPosts: CommunityPost[] = [
     imageUrl: placeholderImages.find(p => p.id === 'community-post-1')?.imageUrl,
     imageHint: placeholderImages.find(p => p.id === 'community-post-1')?.imageHint,
     likes: 15,
-    comments: 4,
+    comments: comments,
   },
   {
     id: '2',
@@ -33,7 +60,7 @@ export const communityPosts: CommunityPost[] = [
     imageUrl: placeholderImages.find(p => p.id === 'community-post-2')?.imageUrl,
     imageHint: placeholderImages.find(p => p.id === 'community-post-2')?.imageHint,
     likes: 42,
-    comments: 8,
+    comments: [],
   },
   {
     id: '3',
@@ -42,6 +69,6 @@ export const communityPosts: CommunityPost[] = [
     timestamp: '1 day ago',
     content: 'The monsoon has been good in our region. How is everyone else preparing for pest control?',
     likes: 22,
-    comments: 12,
+    comments: [],
   },
 ];

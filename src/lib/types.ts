@@ -28,6 +28,15 @@ export type MarketPrice = {
   lon: number;
 };
 
+export type Comment = {
+  id: string;
+  author: string;
+  authorAvatar: string;
+  timestamp: string;
+  content: string;
+  replies?: Comment[];
+};
+
 export type CommunityPost = {
   id: string;
   author: string;
@@ -37,5 +46,5 @@ export type CommunityPost = {
   imageUrl?: string;
   imageHint?: string;
   likes: number;
-  comments: number;
+  comments: Comment[];
 };
