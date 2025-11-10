@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useLanguage } from '@/contexts/language-context';
 import { format } from 'date-fns';
 import { enUS, hi, ta, te, kn, bn, gu } from 'date-fns/locale';
-import { pa } from 'date-fns/locale/pa';
+import { pa } from 'date-fns/locale';
 
 const locales: Record<string, Locale> = {
   en: enUS,
