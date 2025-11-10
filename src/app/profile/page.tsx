@@ -30,7 +30,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { IndianStates } from '@/lib/locations';
-import { useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from '@/firebase';
+import { doc } from 'firebase/firestore';
+import { signInAnonymously, updateProfile } from 'firebase/auth';
+import { Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -40,66 +45,110 @@ const profileSchema = z.object({
 });
 
 const loginSchema = z.object({
-  name: z.string().optional(),
   mobile: z.string().regex(/^[0-9]{10}$/, 'Please enter a valid 10-digit number'),
 });
 
 export default function ProfilePage() {
   const { t } = useLanguage();
-  // This is a placeholder. In a real app, you'd check auth state.
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  
-  const [selectedState, setSelectedState] = useState('');
-  const districts = selectedState ? IndianStates.find(s => s.name === selectedState)?.districts : [];
+  const auth = useAuth();
+  const { user, isUserLoading } = useUser();
+  const firestore = useFirestore();
+  const { toast } = useToast();
 
+  const userDocRef = useMemoFirebase(() => {
+    if (!user) return null;
+    return doc(firestore, 'users', user.uid);
+  }, [firestore, user]);
+
+  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userDocRef);
+
+  const [otpSent, setOtpSent] = useState(false);
+  const [selectedState, setSelectedState] = useState(userProfile?.state || '');
+  const districts = selectedState ? IndianStates.find(s => s.name === selectedState)?.districts : [];
 
   const profileForm = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-        name: "Ramesh Kumar",
-        state: "Maharashtra",
-        district: "Nagpur",
-        village: "Koradi",
-    }
+      name: '',
+      state: '',
+      district: '',
+      village: '',
+    },
   });
-  
-  const loginForm = useForm<z.infer<typeof loginSchema>>({
-      resolver: zodResolver(loginSchema),
-      defaultValues: {
-          name: "",
-          mobile: "",
-      }
-  })
 
-  function onProfileSubmit(values: z.infer<typeof profileSchema>) {
-    console.log(values);
-    // Here you would typically save the profile data to your backend
-    alert('Profile saved successfully! (Not really, this is a demo)');
-  }
-  
-  function onLoginSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
-    if (!isLoggedIn) {
-        setOtpSent(true);
+  const loginForm = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      mobile: '',
+    },
+  });
+
+  useEffect(() => {
+    if (userProfile) {
+      profileForm.reset({
+        name: userProfile.name || '',
+        state: userProfile.state || '',
+        district: userProfile.district || '',
+        village: userProfile.village || '',
+      });
+      if(userProfile.state) setSelectedState(userProfile.state);
+    }
+  }, [userProfile, profileForm]);
+
+  async function onProfileSubmit(values: z.infer<typeof profileSchema>) {
+    if (!user || !userDocRef) return;
+
+    try {
+      // Update Firestore document
+      setDocumentNonBlocking(userDocRef, { ...values, id: user.uid }, { merge: true });
+
+      // Update auth profile if name changed
+      if (user.displayName !== values.name) {
+        await updateProfile(user, { displayName: values.name });
+      }
+
+      toast({
+        title: 'Profile Updated',
+        description: 'Your profile has been saved successfully.',
+      });
+    } catch (error: any) {
+      console.error('Error saving profile:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Could not save profile.',
+        variant: 'destructive',
+      });
     }
   }
-  
-  function handleLogout() {
-      setIsLoggedIn(false);
-      setOtpSent(false);
-  }
-  
-  // A mock login function for demonstration
-  function handleVerifyOtp() {
-      setIsLoggedIn(true);
+
+  function onLoginSubmit(values: z.infer<typeof loginSchema>) {
+    // For now, we will use anonymous sign in for simplicity
+    signInAnonymously(auth).catch(error => {
+       console.error("Anonymous sign in error", error);
+       toast({
+           title: "Login Failed",
+           description: "Could not sign you in. Please try again.",
+           variant: "destructive"
+       })
+    });
   }
 
+  function handleLogout() {
+    auth.signOut();
+  }
+
+  if (isUserLoading || (user && isProfileLoading)) {
+    return (
+      <div className="container mx-auto max-w-md px-4 py-8 flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto max-w-md px-4 py-8">
-      {isLoggedIn ? (
-        <Card className='shadow-lg animate-in fade-in-50 zoom-in-95 duration-500'>
+      {user ? (
+        <Card className="shadow-lg animate-in fade-in-50 zoom-in-95 duration-500">
           <CardHeader>
             <CardTitle className="font-headline text-2xl">{t('my_profile')}</CardTitle>
             <CardDescription>{t('view_manage_account')}</CardDescription>
@@ -120,13 +169,20 @@ export default function ProfilePage() {
                     </FormItem>
                   )}
                 />
-                 <FormField
+                <FormField
                   control={profileForm.control}
                   name="state"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>State</FormLabel>
-                       <Select onValueChange={(value) => { field.onChange(value); setSelectedState(value); profileForm.setValue('district', ''); }} defaultValue={field.value}>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          setSelectedState(value);
+                          profileForm.setValue('district', '');
+                        }}
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select your state" />
@@ -142,13 +198,13 @@ export default function ProfilePage() {
                     </FormItem>
                   )}
                 />
-                 <FormField
+                <FormField
                   control={profileForm.control}
                   name="district"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>District</FormLabel>
-                       <Select onValueChange={field.onChange} value={field.value} disabled={!selectedState}>
+                      <Select onValueChange={field.onChange} value={field.value} disabled={!selectedState}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select your district" />
@@ -177,64 +233,43 @@ export default function ProfilePage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">Save Changes</Button>
+                <Button type="submit" className="w-full" disabled={profileForm.formState.isSubmitting}>
+                  {profileForm.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Save Changes
+                </Button>
               </form>
             </Form>
             <Button variant="destructive" className="w-full mt-4" onClick={handleLogout}>{t('log_out')}</Button>
           </CardContent>
         </Card>
       ) : (
-        <Card className='shadow-lg animate-in fade-in-50 zoom-in-95 duration-500'>
+        <Card className="shadow-lg animate-in fade-in-50 zoom-in-95 duration-500">
           <CardHeader>
             <CardTitle className="font-headline text-2xl">{t('login_or_signup')}</CardTitle>
             <CardDescription>{t('enter_mobile_for_otp')}</CardDescription>
           </CardHeader>
           <CardContent>
-             <Form {...loginForm}>
-                 <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
-                 {!otpSent && (
-                    <FormField
-                        control={loginForm.control}
-                        name="name"
-                        render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{t('full_name')}</FormLabel>
-                            <FormControl>
-                            <Input placeholder={t('enter_full_name')} {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                        )}
-                    />
-                 )}
-                 <FormField
-                    control={loginForm.control}
-                    name="mobile"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{t('mobile_number')}</FormLabel>
-                            <FormControl>
-                                <Input type="tel" placeholder={t('enter_mobile_number')} {...field} disabled={otpSent} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                    
-                {otpSent ? (
-                    <div className="space-y-4 animate-in fade-in-0 duration-300">
-                        <div className="space-y-2">
-                            <Label htmlFor="otp">Enter OTP</Label>
-                            <Input id="otp" placeholder="Enter the 6-digit code" />
-                        </div>
-                        <Button onClick={handleVerifyOtp} className="w-full">Verify OTP</Button>
-                        <Button variant="link" size="sm" onClick={() => setOtpSent(false)} className='w-full'>Back</Button>
-                    </div>
-                ) : (
-                    <Button type="submit" className="w-full">{t('send_otp')}</Button>
-                )}
-                 </form>
-             </Form>
+            <Form {...loginForm}>
+              <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
+                <FormField
+                  control={loginForm.control}
+                  name="mobile"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('mobile_number')}</FormLabel>
+                      <FormControl>
+                        <Input type="tel" placeholder={t('enter_mobile_number')} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full" disabled={loginForm.formState.isSubmitting}>
+                    {loginForm.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {t('login_or_signup')}
+                </Button>
+              </form>
+            </Form>
           </CardContent>
         </Card>
       )}

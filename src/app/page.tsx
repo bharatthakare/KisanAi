@@ -5,11 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { Lightbulb, MessageCircle, ShoppingCart, Users, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
+import { useUser } from '@/firebase';
 
 export default function Home() {
   const { t } = useLanguage();
-  // Placeholder for user data. In a real app, this would come from an auth context.
-  const userName = "Ramesh"; 
+  const { user, isUserLoading } = useUser();
+  
+  const userName = user?.displayName || "Farmer"; 
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -63,7 +65,6 @@ export default function Home() {
                  </CardContent>
             </Card>
         </aside>
-
       </div>
     </div>
   );
