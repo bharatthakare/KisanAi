@@ -5,9 +5,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { WifiOff, MapPin, Thermometer } from 'lucide-react';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/language-context';
-import { format } from 'date-fns';
+import { format, Locale } from 'date-fns';
 import { enUS, hi, ta, te, kn, bn, gu } from 'date-fns/locale';
-import { pa } from 'date-fns/locale';
 
 const locales: Record<string, Locale> = {
   en: enUS,
@@ -16,9 +15,9 @@ const locales: Record<string, Locale> = {
   te,
   kn,
   bn,
-  pa,
   gu,
   mr: enUS, // Defaulting mr to enUS
+  pa: enUS, // Defaulting pa to enUS
 };
 
 const WeatherIcon = ({ iconCode, large = false }: { iconCode: string, large?: boolean }) => {
