@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import type { Comment } from '@/lib/types';
 import { useState } from 'react';
+import { placeholderImages } from '@/lib/placeholder-images';
 
 function CommentCard({ comment }: { comment: Comment }) {
   const [showReply, setShowReply] = useState(false);
@@ -64,6 +65,20 @@ export default function PostPage() {
   const params = useParams();
   const postId = params.id;
   const post = communityPosts.find((p) => p.id === postId);
+  
+  const [isLiked, setIsLiked] = useState(false);
+  // Initialize like count from post, but manage it in state
+  const [likeCount, setLikeCount] = useState(post?.likes ?? 0);
+
+  const handleLike = () => {
+    if (isLiked) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
+    setIsLiked(!isLiked);
+  };
+
 
   if (!post) {
     return (
@@ -112,9 +127,12 @@ export default function PostPage() {
           )}
         </CardContent>
         <CardFooter className="flex justify-between border-t pt-4">
-          <Button variant="ghost" size="sm" className="flex items-center gap-2">
-            <Heart className="h-4 w-4 text-red-500" />
-            {post.likes} Likes
+          <Button variant="ghost" size="sm" className="flex items-center gap-2" onClick={handleLike}>
+            <Heart
+              className="h-4 w-4 text-red-500"
+              fill={isLiked ? "currentColor" : "none"}
+            />
+            {likeCount} Likes
           </Button>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
              <MessageCircle className="h-4 w-4 text-blue-500" />

@@ -15,6 +15,67 @@ import { communityPosts } from '@/lib/placeholder-data';
 import { Heart, MessageCircle, Send, User } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/language-context';
+import { useState } from 'react';
+import type { CommunityPost } from '@/lib/types';
+
+function PostCard({ post }: { post: CommunityPost }) {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes);
+
+  const handleLike = () => {
+    if (isLiked) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
+    setIsLiked(!isLiked);
+  };
+
+  return (
+    <Card className="overflow-hidden">
+      <CardHeader className="flex flex-row items-center gap-4">
+        <Avatar className="h-10 w-10 border">
+          <AvatarImage src={post.authorAvatar} alt={post.author} />
+          <AvatarFallback><User /></AvatarFallback>
+        </Avatar>
+        <div>
+          <p className="font-semibold">{post.author}</p>
+          <p className="text-sm text-muted-foreground">{post.timestamp}</p>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className="mb-4">{post.content}</p>
+        {post.imageUrl && (
+          <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+            <Image
+              src={post.imageUrl}
+              alt="Post image"
+              fill
+              className="object-cover"
+              data-ai-hint={post.imageHint}
+            />
+          </div>
+        )}
+      </CardContent>
+      <CardFooter className="flex justify-between border-t pt-4">
+        <Button variant="ghost" size="sm" className="flex items-center gap-2" onClick={handleLike}>
+          <Heart
+            className="h-4 w-4 text-red-500"
+            fill={isLiked ? 'currentColor' : 'none'}
+          />
+          {likeCount} Likes
+        </Button>
+        <Button variant="ghost" size="sm" className="flex items-center gap-2" asChild>
+          <Link href={`/community/${post.id}`}>
+            <MessageCircle className="h-4 w-4 text-blue-500" />
+            {post.comments.length} Comments
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
 
 export default function CommunityPage() {
   const { t } = useLanguage();
@@ -42,44 +103,7 @@ export default function CommunityPage() {
         {/* Posts Feed */}
         <div className="space-y-6">
           {communityPosts.map((post) => (
-            <Card key={post.id} className="overflow-hidden">
-              <CardHeader className="flex flex-row items-center gap-4">
-                <Avatar className="h-10 w-10 border">
-                  <AvatarImage src={post.authorAvatar} alt={post.author} />
-                  <AvatarFallback><User /></AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-semibold">{post.author}</p>
-                  <p className="text-sm text-muted-foreground">{post.timestamp}</p>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4">{post.content}</p>
-                {post.imageUrl && (
-                  <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-                    <Image
-                      src={post.imageUrl}
-                      alt="Post image"
-                      fill
-                      className="object-cover"
-                      data-ai-hint={post.imageHint}
-                    />
-                  </div>
-                )}
-              </CardContent>
-              <CardFooter className="flex justify-between border-t pt-4">
-                <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                  <Heart className="h-4 w-4 text-red-500" />
-                  {post.likes} Likes
-                </Button>
-                <Button variant="ghost" size="sm" className="flex items-center gap-2" asChild>
-                  <Link href={`/community/${post.id}`}>
-                    <MessageCircle className="h-4 w-4 text-blue-500" />
-                    {post.comments.length} Comments
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
       </div>
