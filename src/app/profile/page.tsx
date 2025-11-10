@@ -74,7 +74,8 @@ export default function ProfilePage() {
 
   function onProfileSubmit(values: z.infer<typeof profileSchema>) {
     console.log(values);
-    // TODO: Save profile data
+    // Here you would typically save the profile data to your backend
+    alert('Profile saved successfully! (Not really, this is a demo)');
   }
   
   function onLoginSubmit(values: z.infer<typeof loginSchema>) {
@@ -98,7 +99,7 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto max-w-md px-4 py-8">
       {isLoggedIn ? (
-        <Card className='shadow-lg'>
+        <Card className='shadow-lg animate-in fade-in-50 zoom-in-95 duration-500'>
           <CardHeader>
             <CardTitle className="font-headline text-2xl">{t('my_profile')}</CardTitle>
             <CardDescription>{t('view_manage_account')}</CardDescription>
@@ -125,7 +126,7 @@ export default function ProfilePage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>State</FormLabel>
-                       <Select onValueChange={(value) => { field.onChange(value); setSelectedState(value); }} defaultValue={field.value}>
+                       <Select onValueChange={(value) => { field.onChange(value); setSelectedState(value); profileForm.setValue('district', ''); }} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select your state" />
@@ -147,7 +148,7 @@ export default function ProfilePage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>District</FormLabel>
-                       <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedState}>
+                       <Select onValueChange={field.onChange} value={field.value} disabled={!selectedState}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select your district" />
@@ -183,7 +184,7 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
       ) : (
-        <Card className='shadow-lg'>
+        <Card className='shadow-lg animate-in fade-in-50 zoom-in-95 duration-500'>
           <CardHeader>
             <CardTitle className="font-headline text-2xl">{t('login_or_signup')}</CardTitle>
             <CardDescription>{t('enter_mobile_for_otp')}</CardDescription>
@@ -221,7 +222,7 @@ export default function ProfilePage() {
                     />
                     
                 {otpSent ? (
-                    <div className="space-y-4">
+                    <div className="space-y-4 animate-in fade-in-0 duration-300">
                         <div className="space-y-2">
                             <Label htmlFor="otp">Enter OTP</Label>
                             <Input id="otp" placeholder="Enter the 6-digit code" />
