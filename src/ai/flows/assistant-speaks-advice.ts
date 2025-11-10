@@ -15,7 +15,7 @@ import wav from 'wav';
 const AssistantSpeaksAdviceInputSchema = z.object({
   query: z.string().describe('The user query about farming advice.'),
   weather: z.string().describe('The current weather conditions.'),
-  language: z.enum(['en', 'hi', 'mr']).describe('The language to respond in.'),
+  language: z.enum(['en', 'hi', 'mr', 'ta', 'te', 'kn', 'bn', 'pa', 'gu']).describe('The language to respond in.'),
 });
 export type AssistantSpeaksAdviceInput = z.infer<typeof AssistantSpeaksAdviceInputSchema>;
 
@@ -32,7 +32,7 @@ export async function assistantSpeaksAdvice(input: AssistantSpeaksAdviceInput): 
 const advicePrompt = ai.definePrompt({
   name: 'advicePrompt',
   input: { schema: AssistantSpeaksAdviceInputSchema },
-  prompt: `You are KisanAI. Based on the user’s question and current weather, give short, actionable farming advice in the selected language (English, Hindi, or Marathi).\n\nUser's Question: {{{query}}}\nCurrent Weather: {{{weather}}}\nLanguage: {{{language}}}`,
+  prompt: `You are KisanAI. Based on the user’s question and current weather, give short, actionable farming advice in the selected language.\n\nUser's Question: {{{query}}}\nCurrent Weather: {{{weather}}}\nLanguage: {{{language}}}`,
 });
 
 const assistantSpeaksAdviceFlow = ai.defineFlow(

@@ -9,6 +9,13 @@ export type WeatherData = {
   lon: number;
 };
 
+export type WeatherForecast = {
+    date: number;
+    temp: number;
+    condition: string;
+    icon: string;
+};
+
 export type MarketPrice = {
   id: string;
   crop: string;

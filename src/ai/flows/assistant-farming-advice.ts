@@ -14,7 +14,7 @@ import {z} from 'genkit';
 const AssistantInputSchema = z.object({
   question: z.string().describe('The user question about farming.'),
   weather: z.string().describe('The current weather conditions.'),
-  language: z.enum(['English', 'Hindi', 'Marathi']).describe('The selected language for the response.'),
+  language: z.enum(['en', 'hi', 'mr', 'ta', 'te', 'kn', 'bn', 'pa', 'gu']).describe('The selected language for the response.'),
 });
 export type AssistantInput = z.infer<typeof AssistantInputSchema>;
 

@@ -7,8 +7,8 @@ type Language = 'en' | 'hi' | 'mr' | 'ta' | 'te' | 'kn' | 'bn' | 'pa' | 'gu';
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  // A simple t function for demonstration
-  t: (key: string) => string;
+  // A t function that can handle placeholders
+  t: (key: string, values?: {[key: string]: string | number}) => string;
 }
 
 const translations = {
@@ -26,15 +26,21 @@ const translations = {
     profile: 'Profile',
     // Home Page
     welcome_to_kisanai: 'Welcome to KisanAI',
+    welcome_message: 'Welcome, {{name}}!',
     smart_farming_partner: 'Your smart farming partner for a richer harvest.',
     quick_actions: 'Quick Actions',
+    quick_links: 'Quick Links',
     get_farming_advice: 'Get farming advice',
     market_prices: 'Market Prices',
     check_crop_prices: 'Check crop prices',
     connect_with_farmers: 'Connect with farmers',
     customize_your_app: 'Customize your app',
+    daily_tip: 'Daily Tip',
+    daily_tip_content: 'Check soil moisture before irrigating your fields. Over-watering can be as harmful as under-watering.',
     // Weather Card
     current_weather: 'Current Weather',
+    weather_forecast: 'Weather Forecast',
+    today: 'Today',
     weather_error: 'Weather Error',
     humidity: 'Humidity',
     wind: 'Wind',
@@ -88,15 +94,21 @@ const translations = {
     profile: 'प्रोफ़ाइल',
     // Home Page
     welcome_to_kisanai: 'किसान-एआई में आपका स्वागत है',
+    welcome_message: 'नमस्ते, {{name}}!',
     smart_farming_partner: 'एक समृद्ध फसल के लिए आपका स्मार्ट खेती पार्टनर।',
     quick_actions: 'त्वरित कार्रवाइयां',
+    quick_links: 'त्वरित लिंक',
     get_farming_advice: 'खेती की सलाह लें',
     market_prices: 'बाजार मूल्य',
     check_crop_prices: 'फसलों की कीमतें जांचें',
     connect_with_farmers: 'किसानों से जुड़ें',
     customize_your_app: 'अपने ऐप को कस्टमाइज़ करें',
+    daily_tip: 'आज का सुझाव',
+    daily_tip_content: 'अपने खेतों की सिंचाई करने से पहले मिट्टी की नमी की जाँच करें। ज़्यादा पानी देना भी कम पानी देने जितना ही हानिकारक हो सकता है।',
     // Weather Card
     current_weather: 'वर्तमान मौसम',
+    weather_forecast: 'मौसम पूर्वानुमान',
+    today: 'आज',
     weather_error: 'मौसम त्रुटि',
     humidity: 'नमी',
     wind: 'हवा',
@@ -150,15 +162,21 @@ const translations = {
     profile: 'प्रोफाइल',
     // Home Page
     welcome_to_kisanai: 'किसान-एआय मध्ये आपले स्वागत आहे',
+    welcome_message: 'नमस्कार, {{name}}!',
     smart_farming_partner: 'अधिक समृद्ध पिकासाठी तुमचा स्मार्ट शेती भागीदार.',
     quick_actions: 'द्रुत क्रिया',
+    quick_links: 'द्रुत दुवे',
     get_farming_advice: 'शेतीविषयक सल्ला मिळवा',
     market_prices: 'बाजारभाव',
     check_crop_prices: 'पिकांच्या किमती तपासा',
     connect_with_farmers: 'शेतकऱ्यांशी संपर्क साधा',
     customize_your_app: 'तुमचे ॲप सानुकूलित करा',
+    daily_tip: 'आजचा सल्ला',
+    daily_tip_content: 'आपल्या शेतात सिंचन करण्यापूर्वी जमिनीतील ओलावा तपासा. जास्त पाणी देणे हे कमी पाणी देण्याइतकेच हानिकारक असू शकते.',
     // Weather Card
     current_weather: 'सध्याचे हवामान',
+    weather_forecast: 'हवामान अंदाज',
+    today: 'आज',
     weather_error: 'हवामान त्रुटी',
     humidity: 'आर्द्रता',
     wind: 'वारा',
@@ -209,14 +227,20 @@ const translations = {
     community: 'சமூகம்',
     profile: 'சுயவிவரம்',
     welcome_to_kisanai: 'கிசான்ஏஐ-க்கு வரவேற்கிறோம்',
+    welcome_message: 'வணக்கம், {{name}}!',
     smart_farming_partner: 'ஒரு சிறந்த அறுவடைக்கு உங்கள் έξυπனான விவசாய கூட்டாளி.',
     quick_actions: 'விரைவு நடவடிக்கைகள்',
+    quick_links: 'விரைவு இணைப்புகள்',
     get_farming_advice: 'விவசாய ஆலோசனை பெறுங்கள்',
     market_prices: 'சந்தை விலைகள்',
     check_crop_prices: 'பயிர் விலைகளை சரிபார்க்கவும்',
     connect_with_farmers: 'விவசாயிகளுடன் இணையுங்கள்',
     customize_your_app: 'உங்கள் பயன்பாட்டைத் தனிப்பயனாக்குங்கள்',
+    daily_tip: 'தினசரி உதவிக்குறிப்பு',
+    daily_tip_content: 'உங்கள் வயல்களுக்கு நீர்ப்பாசனம் செய்வதற்கு முன் மண் ஈரப்பதத்தைச் சரிபார்க்கவும். அதிகப்படியான నీటిపారుదల తక్కువ నీటిపారుదల వలె హానికరం.',
     current_weather: 'தற்போதைய வானிலை',
+    weather_forecast: 'வானிலை முன்னறிவிப்பு',
+    today: 'இன்று',
     weather_error: 'வானிலை பிழை',
     humidity: 'ஈரப்பதம்',
     wind: 'காற்று',
@@ -262,14 +286,20 @@ const translations = {
     community: 'సంఘం',
     profile: 'ప్రొఫైల్',
     welcome_to_kisanai: 'కిసాన్‌ఏఐకి స్వాగతం',
+    welcome_message: 'నమస్కారం, {{name}}!',
     smart_farming_partner: 'ఒక గొప్ప పంట కోసం మీ స్మార్ట్ వ్యవసాయ భాగస్వామి.',
     quick_actions: 'త్వరిత చర్యలు',
+    quick_links: 'త్వరిత లింకులు',
     get_farming_advice: 'వ్యవసాయ సలహా పొందండి',
     market_prices: 'మార్కెట్ ధరలు',
     check_crop_prices: 'పంట ధరలను తనిఖీ చేయండి',
     connect_with_farmers: 'రైతులతో కనెక్ట్ అవ్వండి',
     customize_your_app: 'మీ అనువర్తనాన్ని అనుకూలీకరించండి',
+    daily_tip: 'రోజువారీ చిట్కా',
+    daily_tip_content: 'మీ పొలాలకు నీరు పెట్టే ముందు నేల తేమను తనిఖీ చేయండి. ఎక్కువ నీరు పెట్టడం కూడా తక్కువ నీరు పెట్టడం అంత హానికరం.',
     current_weather: 'ప్రస్తుత వాతావరణం',
+    weather_forecast: 'వాతావరణ సూచన',
+    today: 'ఈ రోజు',
     weather_error: 'వాతావరణ లోపం',
     humidity: 'తేమ',
     wind: 'గాలి',
@@ -315,14 +345,20 @@ const translations = {
     community: 'ಸಮುದಾಯ',
     profile: 'ಪ್ರೊಫೈಲ್',
     welcome_to_kisanai: 'ಕಿಸಾನ್‌ಎಐಗೆ ಸ್ವಾಗತ',
+    welcome_message: 'ನಮಸ್ಕಾರ, {{name}}!',
     smart_farming_partner: 'ಉತ್ತಮ ಸುಗ್ಗಿಗಾಗಿ ನಿಮ್ಮ ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಪಾಲುದಾರ.',
     quick_actions: 'ತ್ವರಿತ ಕ್ರಮಗಳು',
+    quick_links: 'ತ್ವರಿತ ಲಿಂಕ್‌ಗಳು',
     get_farming_advice: 'ಕೃಷಿ ಸಲಹೆ ಪಡೆಯಿರಿ',
     market_prices: 'ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು',
     check_crop_prices: 'ಬೆಳೆ ಬೆಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ',
     connect_with_farmers: 'ರೈತರೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಿ',
     customize_your_app: 'ನಿಮ್ಮ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ',
+    daily_tip: 'ದೈನಂದಿನ ಸಲಹೆ',
+    daily_tip_content: 'ನಿಮ್ಮ ಹೊಲಗಳಿಗೆ ನೀರುಣಿಸುವ ಮೊದಲು ಮಣ್ಣಿನ ತೇವಾಂಶವನ್ನು ಪರೀಕ್ಷಿಸಿ. ಹೆಚ್ಚು ನೀರುಣಿಸುವುದು ಕಡಿಮೆ ನೀರುಣಿಸುವಷ್ಟೇ ಹಾನಿಕಾರಕ.',
     current_weather: 'ಪ್ರಸ್ತುತ ಹವಾಮಾನ',
+    weather_forecast: 'ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ',
+    today: 'ಇಂದು',
     weather_error: 'ಹವಾಮಾನ ದೋಷ',
     humidity: 'ತೇವಾಂಶ',
     wind: 'ಗಾಳಿ',
@@ -368,14 +404,20 @@ const translations = {
     community: 'সম্প্রদায়',
     profile: 'প্রোফাইল',
     welcome_to_kisanai: 'কিসানএআই-তে স্বাগতম',
+    welcome_message: 'নমস্কার, {{name}}!',
     smart_farming_partner: 'একটি সমৃদ্ধ ফসলের জন্য আপনার স্মার্ট চাষ অংশীদার।',
     quick_actions: 'দ্রুত ক্রিয়া',
+    quick_links: 'দ্রুত লিঙ্ক',
     get_farming_advice: 'চাষের পরামর্শ নিন',
     market_prices: 'বাজার দর',
     check_crop_prices: 'ফসলের দাম পরীক্ষা করুন',
     connect_with_farmers: 'চাষীদের সাথে সংযোগ স্থাপন করুন',
     customize_your_app: 'আপনার অ্যাপটি কাস্টমাইজ করুন',
+    daily_tip: 'দৈনিক টিপ',
+    daily_tip_content: 'আপনার জমিতে সেচ দেওয়ার আগে মাটির আর্দ্রতা পরীক্ষা করুন। অতিরিক্ত জল দেওয়া কম জল দেওয়ার মতোই ক্ষতিকর হতে পারে।',
     current_weather: 'বর্তমান আবহাওয়া',
+    weather_forecast: 'আবহাওয়ার পূর্বাভাস',
+    today: 'আজ',
     weather_error: 'আবহাওয়ার ত্রুটি',
     humidity: 'আর্দ্রতা',
     wind: 'বাতাস',
@@ -421,14 +463,20 @@ const translations = {
     community: 'ਭਾਈਚਾਰਾ',
     profile: 'ਪ੍ਰੋਫਾਈਲ',
     welcome_to_kisanai: 'ਕਿਸਾਨਏਆਈ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ',
+    welcome_message: 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, {{name}}!',
     smart_farming_partner: 'ਇੱਕ ਅਮੀਰ ਫਸਲ ਲਈ ਤੁਹਾਡਾ ਸਮਾਰਟ ਖੇਤੀਬਾੜੀ ਸਾਥੀ।',
     quick_actions: 'ਤੁਰੰਤ ਕਾਰਵਾਈਆਂ',
+    quick_links: 'ਤੁਰੰਤ ਲਿੰਕ',
     get_farming_advice: 'ਖੇਤੀਬਾੜੀ ਸਲਾਹ ਲਵੋ',
     market_prices: 'ਬਾਜ਼ਾਰ ਦੀਆਂ ਕੀਮਤਾਂ',
     check_crop_prices: 'ਫਸਲਾਂ ਦੀਆਂ ਕੀਮਤਾਂ ਦੀ ਜਾਂਚ ਕਰੋ',
     connect_with_farmers: 'ਕਿਸਾਨਾਂ ਨਾਲ ਜੁੜੋ',
     customize_your_app: 'ਆਪਣੀ ਐਪ ਨੂੰ ਅਨੁਕੂਲਿਤ ਕਰੋ',
+    daily_tip: 'ਰੋਜ਼ਾਨਾ ਸੁਝਾਅ',
+    daily_tip_content: 'ਆਪਣੇ ਖੇਤਾਂ ਨੂੰ ਸਿੰਜਾਈ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਮਿੱਟੀ ਦੀ ਨਮੀ ਦੀ ਜਾਂਚ ਕਰੋ। ਵੱਧ ਪਾਣੀ ਦੇਣਾ ਘੱਟ ਪਾਣੀ ਦੇਣ ਵਾਂਗ ਹੀ ਨੁਕਸਾਨਦੇਹ ਹੋ ਸਕਦਾ ਹੈ।',
     current_weather: 'ਮੌਜੂਦਾ ਮੌਸਮ',
+    weather_forecast: 'ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ',
+    today: 'ਅੱਜ',
     weather_error: 'ਮੌਸਮ ਵਿੱਚ ਗਲਤੀ',
     humidity: 'ਨਮੀ',
     wind: 'ਹਵਾ',
@@ -474,14 +522,20 @@ const translations = {
     community: 'સમુદાય',
     profile: 'પ્રોફાઇલ',
     welcome_to_kisanai: 'કિસાનએઆઈમાં આપનું સ્વાગત છે',
+    welcome_message: 'નમસ્તે, {{name}}!',
     smart_farming_partner: 'એક સમૃદ્ધ પાક માટે તમારા સ્માર્ટ ખેતી ભાગીદાર.',
     quick_actions: 'ઝડપી ક્રિયાઓ',
+    quick_links: 'ઝડપી લિંક્સ',
     get_farming_advice: 'ખેતીની સલાહ મેળવો',
     market_prices: 'બજાર ભાવ',
     check_crop_prices: 'પાકના ભાવ તપાસો',
     connect_with_farmers: 'ખેડૂતો સાથે જોડાઓ',
     customize_your_app: 'તમારી એપ્લિકેશનને કસ્ટમાઇઝ કરો',
+    daily_tip: 'દૈનિક ટીપ',
+    daily_tip_content: 'તમારા ખેતરોમાં સિંચાઈ કરતા પહેલા જમીનની ભેજ તપાસો. વધુ પડતું પાણી આપવું એ ઓછું પાણી આપવા જેટલું જ હાનિકારક હોઈ શકે છે.',
     current_weather: 'વર્તમાન હવામાન',
+    weather_forecast: 'હવામાનની આગાહી',
+    today: 'આજે',
     weather_error: 'હવામાન ભૂલ',
     humidity: 'ભેજ',
     wind: 'પવન',
@@ -523,9 +577,15 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
   
-  const t = (key: string): string => {
+  const t = (key: string, values: {[key: string]: string | number} = {}): string => {
     const translationSet = translations[language] || translations.en;
-    return translationSet[key as keyof typeof translationSet] || key;
+    let translation = translationSet[key as keyof typeof translationSet] || key;
+    
+    Object.keys(values).forEach(k => {
+        translation = translation.replace(`{{${k}}}`, String(values[k]));
+    });
+
+    return translation;
   };
   
   return (
