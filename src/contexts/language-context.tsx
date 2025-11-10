@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type Language = 'en' | 'hi' | 'mr';
+type Language = 'en' | 'hi' | 'mr' | 'ta' | 'te' | 'kn' | 'bn' | 'pa' | 'gu';
 
 interface LanguageContextType {
   language: Language;
@@ -16,7 +16,6 @@ const translations = {
     welcome: 'Welcome',
     settings: 'Settings',
     language: 'Language',
-    // Add other keys here
   },
   hi: {
     welcome: 'स्वागत है',
@@ -27,6 +26,36 @@ const translations = {
     welcome: 'स्वागत आहे',
     settings: 'सेटिंग्ज',
     language: 'भाषा',
+  },
+  ta: {
+    welcome: 'வரவேற்பு',
+    settings: 'அமைப்புகள்',
+    language: 'மொழி',
+  },
+  te: {
+    welcome: 'స్వాగతం',
+    settings: 'సెట్టింగ్‌లు',
+    language: 'భాష',
+  },
+  kn: {
+    welcome: 'ಸ್ವಾಗತ',
+    settings: 'ಸಂಯೋಜನೆಗಳು',
+    language: 'ಭಾಷೆ',
+  },
+  bn: {
+    welcome: 'স্বাগত',
+    settings: 'সেটিংস',
+    language: 'ভাষা',
+  },
+  pa: {
+    welcome: 'ਜੀ ਆਇਆਂ ਨੂੰ',
+    settings: 'ਸੈਟਿੰਗਾਂ',
+    language: 'ਭਾਸ਼ਾ',
+  },
+  gu: {
+    welcome: 'પધારો',
+    settings: 'સેટિંગ્સ',
+    language: 'ભાષા',
   },
 };
 

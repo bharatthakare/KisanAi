@@ -11,6 +11,12 @@ export function LanguageSwitcher() {
     { code: 'en', name: 'English' },
     { code: 'hi', name: 'हिन्दी (Hindi)' },
     { code: 'mr', name: 'मराठी (Marathi)' },
+    { code: 'ta', name: 'தமிழ் (Tamil)' },
+    { code: 'te', name: 'తెలుగు (Telugu)' },
+    { code: 'kn', name: 'ಕನ್ನಡ (Kannada)' },
+    { code: 'bn', name: 'বাংলা (Bengali)' },
+    { code: 'pa', name: 'ਪੰਜਾਬੀ (Punjabi)' },
+    { code: 'gu', name: 'ગુજરાતી (Gujarati)' },
   ] as const;
 
   return (

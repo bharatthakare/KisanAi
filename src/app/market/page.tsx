@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardContent,
@@ -14,11 +16,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { marketPrices } from '@/lib/placeholder-data';
+import { marketPrices as allMarketPrices } from '@/lib/placeholder-data';
 import { TrendUpIcon, TrendDownIcon, TrendStableIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import type { MarketPrice } from '@/lib/types';
 import { formatDistanceToNow } from 'date-fns';
+import { useWeather } from '@/hooks/use-weather';
+import { Skeleton } from '@/components/ui/skeleton';
+import { MapPin } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const TrendIndicator = ({ trend }: { trend: MarketPrice['trend'] }) => {
   const trendClasses = {
@@ -41,14 +47,52 @@ const TrendIndicator = ({ trend }: { trend: MarketPrice['trend'] }) => {
   );
 };
 
+// Haversine formula to calculate distance between two lat/lon points
+function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371; // Radius of the earth in km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c; // Distance in km
+  return d;
+}
+
 export default function MarketPage() {
+  const { weather, loading: weatherLoading, error: weatherError } = useWeather();
+  const [nearbyMarkets, setNearbyMarkets] = useState<MarketPrice[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!weatherLoading) {
+      let sortedMarkets;
+      if (weather && !weatherError) {
+        sortedMarkets = allMarketPrices
+          .map(market => ({
+            ...market,
+            distance: getDistance(weather.lat, weather.lon, market.lat, market.lon),
+          }))
+          .sort((a, b) => a.distance - b.distance);
+      } else {
+        // Fallback to alphabetical sort if location is unavailable
+        sortedMarkets = [...allMarketPrices].sort((a, b) => a.market.localeCompare(b.market));
+      }
+      setNearbyMarkets(sortedMarkets);
+      setLoading(false);
+    }
+  }, [weather, weatherLoading, weatherError]);
+
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Card>
         <CardHeader>
           <CardTitle className="font-headline text-2xl">Market Prices</CardTitle>
-          <CardDescription>
-            Latest agricultural commodity prices from various markets.
+          <CardDescription className="flex items-center gap-1">
+            {weather && !weatherError ? <><MapPin className="w-4 h-4"/> Showing markets near {weather.location}</> : "Latest agricultural commodity prices from various markets."}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -57,28 +101,42 @@ export default function MarketPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Crop</TableHead>
-                  <TableHead className="text-right">Price (per {marketPrices[0]?.unit || 'unit'})</TableHead>
                   <TableHead>Market</TableHead>
+                  <TableHead className="text-right">Price (per unit)</TableHead>
                   <TableHead>Trend</TableHead>
                   <TableHead className="text-right">Last Updated</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {marketPrices.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">{item.crop}</TableCell>
-                    <TableCell className="text-right font-mono">₹{item.price.toLocaleString('en-IN')}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">{item.market}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <TrendIndicator trend={item.trend} />
-                    </TableCell>
-                    <TableCell className="text-right text-muted-foreground">
-                        {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {loading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell><Skeleton className="h-5 w-20" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                      <TableCell className="text-right"><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-16" /></TableCell>
+                      <TableCell className="text-right"><Skeleton className="h-5 w-24 ml-auto" /></TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  nearbyMarkets.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">{item.crop}</TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">{item.market}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        ₹{item.price.toLocaleString('en-IN')}/{item.unit}
+                      </TableCell>
+                      <TableCell>
+                        <TrendIndicator trend={item.trend} />
+                      </TableCell>
+                      <TableCell className="text-right text-muted-foreground">
+                          {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>

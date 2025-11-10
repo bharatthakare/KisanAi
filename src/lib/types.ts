@@ -5,6 +5,8 @@ export type WeatherData = {
   condition: string;
   location: string;
   icon: string;
+  lat: number;
+  lon: number;
 };
 
 export type MarketPrice = {
@@ -15,6 +17,8 @@ export type MarketPrice = {
   market: string;
   trend: 'up' | 'down' | 'stable';
   timestamp: string;
+  lat: number;
+  lon: number;
 };
 
 export type CommunityPost = {

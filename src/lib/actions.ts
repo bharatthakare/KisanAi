@@ -30,6 +30,8 @@ export async function getWeatherForCoords(lat: number, lon: number): Promise<Wea
       condition: data.weather[0].main,
       location: `${data.name}, ${data.sys.country}`,
       icon: data.weather[0].icon,
+      lat: data.coord.lat,
+      lon: data.coord.lon,
     };
   } catch (error) {
     console.error('Error fetching weather data:', error);
