@@ -24,7 +24,7 @@ export function AssistantChat() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { weather, loading: weatherLoading, error: weatherError } = useWeather();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -91,9 +91,9 @@ export function AssistantChat() {
       <header className="p-4 border-b bg-background">
         <h1 className="text-xl font-headline font-semibold flex items-center gap-2">
             <Bot className="text-primary"/>
-            AI Farming Assistant
+            {t('ai_farming_assistant')}
         </h1>
-        <p className="text-sm text-muted-foreground">Ask me anything about farming!</p>
+        <p className="text-sm text-muted-foreground">{t('ask_me_anything')}</p>
       </header>
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         <div className="max-w-4xl mx-auto w-full space-y-4">
@@ -111,7 +111,7 @@ export function AssistantChat() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
-                placeholder="Ask about crops, soil, or pests..."
+                placeholder={t('ask_about_crops')}
                 className="flex-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                 disabled={isLoading}
               />
@@ -123,7 +123,7 @@ export function AssistantChat() {
           </CardContent>
         </Card>
         <p className="text-xs text-muted-foreground text-center mt-2">
-            KisanAI can make mistakes. Consider checking important information.
+            {t('assistant_can_mistake')}
         </p>
       </div>
     </div>

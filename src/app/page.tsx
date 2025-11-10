@@ -1,3 +1,5 @@
+
+'use client';
 import { WeatherCard } from '@/components/weather-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -5,36 +7,39 @@ import Link from 'next/link';
 import { Lightbulb, MessageCircle, ShoppingCart, Users } from 'lucide-react';
 import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
-
-const quickLinks = [
-  {
-    href: '/assistant',
-    title: 'AI Assistant',
-    description: 'Get farming advice',
-    icon: MessageCircle,
-  },
-  {
-    href: '/market',
-    title: 'Market Prices',
-    description: 'Check crop prices',
-    icon: ShoppingCart,
-  },
-  {
-    href: '/community',
-    title: 'Community',
-    description: 'Connect with farmers',
-    icon: Users,
-  },
-   {
-    href: '/settings',
-    title: 'Settings',
-    description: 'Customize your app',
-    icon: Lightbulb,
-  },
-];
+import { useLanguage } from '@/contexts/language-context';
 
 export default function Home() {
+  const { t } = useLanguage();
   const heroImage = placeholderImages.find(p => p.id === 'hero');
+
+  const quickLinks = [
+    {
+      href: '/assistant',
+      title: t('ai_assistant'),
+      description: t('get_farming_advice'),
+      icon: MessageCircle,
+    },
+    {
+      href: '/market',
+      title: t('market_prices'),
+      description: t('check_crop_prices'),
+      icon: ShoppingCart,
+    },
+    {
+      href: '/community',
+      title: t('community'),
+      description: t('connect_with_farmers'),
+      icon: Users,
+    },
+     {
+      href: '/settings',
+      title: t('settings'),
+      description: t('customize_your_app'),
+      icon: Lightbulb,
+    },
+  ];
+
   return (
     <div className="container mx-auto px-4 py-8">
       <section className="mb-12">
@@ -50,8 +55,8 @@ export default function Home() {
               />
             }
             <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center text-white p-4">
-              <h1 className="text-4xl md:text-5xl font-headline font-bold mb-2">Welcome to KisanAI</h1>
-              <p className="text-lg md:text-xl max-w-2xl">Your smart farming partner for a richer harvest.</p>
+              <h1 className="text-4xl md:text-5xl font-headline font-bold mb-2">{t('welcome_to_kisanai')}</h1>
+              <p className="text-lg md:text-xl max-w-2xl">{t('smart_farming_partner')}</p>
             </div>
           </div>
         </Card>
@@ -60,7 +65,7 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
           <section>
-            <h2 className="text-2xl font-headline font-semibold mb-4">Quick Actions</h2>
+            <h2 className="text-2xl font-headline font-semibold mb-4">{t('quick_actions')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {quickLinks.map((link) => (
                 <Link href={link.href} key={link.href} passHref>

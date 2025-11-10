@@ -1,3 +1,6 @@
+
+'use client';
+
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -11,24 +14,26 @@ import { Textarea } from '@/components/ui/textarea';
 import { communityPosts } from '@/lib/placeholder-data';
 import { Heart, MessageCircle, Send, User } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/contexts/language-context';
 
 export default function CommunityPage() {
+  const { t } = useLanguage();
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold font-headline">Community Feed</h1>
+        <h1 className="text-3xl font-bold font-headline">{t('community_feed')}</h1>
         
         {/* Create Post Card */}
         <Card>
           <CardHeader>
-            <h2 className="text-lg font-semibold">Create a Post</h2>
+            <h2 className="text-lg font-semibold">{t('create_a_post')}</h2>
           </CardHeader>
           <CardContent>
             <div className="grid w-full gap-2">
-              <Textarea placeholder="What's on your mind, farmer?" />
+              <Textarea placeholder={t('whats_on_your_mind')} />
               <Button>
                 <Send className="mr-2 h-4 w-4" />
-                Post
+                {t('post')}
               </Button>
             </div>
           </CardContent>

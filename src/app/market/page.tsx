@@ -25,6 +25,7 @@ import { useWeather } from '@/hooks/use-weather';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/contexts/language-context';
 
 const TrendIndicator = ({ trend }: { trend: MarketPrice['trend'] }) => {
   const trendClasses = {
@@ -65,6 +66,7 @@ export default function MarketPage() {
   const { weather, loading: weatherLoading, error: weatherError } = useWeather();
   const [nearbyMarkets, setNearbyMarkets] = useState<MarketPrice[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!weatherLoading) {
@@ -90,9 +92,9 @@ export default function MarketPage() {
     <div className="container mx-auto px-4 py-8">
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline text-2xl">Market Prices</CardTitle>
+          <CardTitle className="font-headline text-2xl">{t('market_prices')}</CardTitle>
           <CardDescription className="flex items-center gap-1">
-            {weather && !weatherError ? <><MapPin className="w-4 h-4"/> Showing markets near {weather.location}</> : "Latest agricultural commodity prices from various markets."}
+            {weather && !weatherError ? <><MapPin className="w-4 h-4"/> {t('showing_markets_near')} {weather.location}</> : t('latest_prices')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -100,11 +102,11 @@ export default function MarketPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Crop</TableHead>
-                  <TableHead>Market</TableHead>
-                  <TableHead className="text-right">Price (per unit)</TableHead>
-                  <TableHead>Trend</TableHead>
-                  <TableHead className="text-right">Last Updated</TableHead>
+                  <TableHead>{t('crop')}</TableHead>
+                  <TableHead>{t('market')}</TableHead>
+                  <TableHead className="text-right">{t('price_per_unit')}</TableHead>
+                  <TableHead>{t('trend')}</TableHead>
+                  <TableHead className="text-right">{t('last_updated')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

@@ -1,3 +1,6 @@
+
+'use client';
+
 import {
   Card,
   CardContent,
@@ -8,8 +11,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useLanguage } from '@/contexts/language-context';
 
 export default function ProfilePage() {
+  const { t } = useLanguage();
   // This is a placeholder. In a real app, you'd check auth state.
   const isLoggedIn = false;
 
@@ -18,37 +23,37 @@ export default function ProfilePage() {
       {isLoggedIn ? (
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">My Profile</CardTitle>
-            <CardDescription>View and manage your account details.</CardDescription>
+            <CardTitle className="font-headline">{t('my_profile')}</CardTitle>
+            <CardDescription>{t('view_manage_account')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label>Name</Label>
+              <Label>{t('name')}</Label>
               <p className="font-semibold">Ramesh Kumar</p>
             </div>
             <div>
-              <Label>Mobile Number</Label>
+              <Label>{t('mobile_number')}</Label>
               <p className="font-semibold">+91-98XXXXXX99</p>
             </div>
-            <Button variant="destructive" className="w-full">Log Out</Button>
+            <Button variant="destructive" className="w-full">{t('log_out')}</Button>
           </CardContent>
         </Card>
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline text-2xl">Login or Sign Up</CardTitle>
-            <CardDescription>Enter your mobile number to receive an OTP.</CardDescription>
+            <CardTitle className="font-headline text-2xl">{t('login_or_signup')}</CardTitle>
+            <CardDescription>{t('enter_mobile_for_otp')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input id="name" placeholder="Enter your full name" />
+              <Label htmlFor="name">{t('full_name')}</Label>
+              <Input id="name" placeholder={t('enter_full_name')} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="mobile">Mobile Number</Label>
-              <Input id="mobile" type="tel" placeholder="Enter your 10-digit mobile number" />
+              <Label htmlFor="mobile">{t('mobile_number')}</Label>
+              <Input id="mobile" type="tel" placeholder={t('enter_mobile_number')} />
             </div>
-            <Button className="w-full">Send OTP</Button>
+            <Button className="w-full">{t('send_otp')}</Button>
           </CardContent>
         </Card>
       )}

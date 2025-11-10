@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
@@ -57,7 +56,7 @@ export default function SettingsPage() {
             <Languages className='w-6 h-6' />
             <div>
                 <CardTitle>{t('language')}</CardTitle>
-                <CardDescription>Choose your preferred language for the app.</CardDescription>
+                <CardDescription>{t('choose_language')}</CardDescription>
             </div>
         </CardHeader>
         <CardContent>
@@ -69,12 +68,12 @@ export default function SettingsPage() {
         <CardHeader className='flex-row items-center gap-4 space-y-0'>
             <Bell className='w-6 h-6' />
             <div>
-                <CardTitle>Notifications</CardTitle>
-                <CardDescription>Enable notifications for important alerts.</CardDescription>
+                <CardTitle>{t('notifications')}</CardTitle>
+                <CardDescription>{t('enable_notifications')}</CardDescription>
             </div>
         </CardHeader>
         <CardContent>
-          <Button onClick={handleEnableNotifications}>Enable Notifications</Button>
+          <Button onClick={handleEnableNotifications}>{t('enable_notifications_button')}</Button>
         </CardContent>
       </Card>
     </div>
