@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, UserCircle } from 'lucide-react';
+import { Menu, UserCircle, Settings } from 'lucide-react';
 import { Logo } from './icons';
 import { useLanguage } from '@/contexts/language-context';
 
@@ -15,7 +15,6 @@ export function Header() {
     { href: '/assistant', label: t('ai_assistant') },
     { href: '/market', label: t('market') },
     { href: '/community', label: t('community') },
-    { href: '/settings', label: t('settings') },
   ];
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -75,6 +74,12 @@ export function Header() {
               <Link href="/profile">
                 <UserCircle className="h-5 w-5" />
                 <span className="sr-only">{t('profile')}</span>
+              </Link>
+            </Button>
+             <Button variant="ghost" size="icon" asChild>
+              <Link href="/settings">
+                <Settings className="h-5 w-5" />
+                <span className="sr-only">{t('settings')}</span>
               </Link>
             </Button>
           </nav>

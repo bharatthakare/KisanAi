@@ -3,12 +3,12 @@
 import { WeatherForecastCard } from '@/components/weather-forecast-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { Lightbulb, MessageCircle, ShoppingCart, Users } from 'lucide-react';
+import { Lightbulb, MessageCircle, ShoppingCart, Users, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
 
 export default function Home() {
   const { t } = useLanguage();
-  // Placeholder for user data
+  // Placeholder for user data. In a real app, this would come from an auth context.
   const userName = "Ramesh"; 
 
   return (
@@ -57,7 +57,7 @@ export default function Home() {
                         <span className="text-sm font-semibold text-center">{t('community')}</span>
                      </Link>
                      <Link href="/settings" className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
-                        <Lightbulb className="w-8 h-8 text-primary mb-2"/>
+                        <Settings className="w-8 h-8 text-primary mb-2"/>
                         <span className="text-sm font-semibold text-center">{t('settings')}</span>
                      </Link>
                  </CardContent>
