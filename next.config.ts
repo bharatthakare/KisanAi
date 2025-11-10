@@ -35,6 +35,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/img/wn/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'naturespath.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

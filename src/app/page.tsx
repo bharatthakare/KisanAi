@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Lightbulb, MessageCircle, ShoppingCart, Users, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
 import { useUser } from '@/firebase';
+import Image from 'next/image';
 
 export default function Home() {
   const { t } = useLanguage();
@@ -15,9 +16,19 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <section className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-headline font-bold mb-2">{t('welcome_message', { name: userName })}</h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">{t('smart_farming_partner')}</p>
+      <section className="relative mb-12 h-64 w-full overflow-hidden rounded-xl shadow-lg">
+        <Image
+          src="https://naturespath.com/cdn/shop/articles/organic_farm_field-598622.jpg?v=1725927254&width=2000"
+          alt="Organic farm field"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 flex flex-col justify-center p-8 text-white">
+          <h1 className="text-4xl md:text-5xl font-headline font-bold mb-2 drop-shadow-md">{t('welcome_message', { name: userName })}</h1>
+          <p className="text-lg md:text-xl max-w-2xl drop-shadow-sm">{t('smart_farming_partner')}</p>
+        </div>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
