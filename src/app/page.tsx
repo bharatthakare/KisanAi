@@ -3,7 +3,7 @@
 import { WeatherForecastCard } from '@/components/weather-forecast-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { Lightbulb, MessageCircle, ShoppingCart, Users, Settings, Mic } from 'lucide-react';
+import { Lightbulb, MessageCircle, ShoppingCart, Users, Settings, Mic, Bot } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
 import { useUser } from '@/firebase';
 import Image from 'next/image';
@@ -60,6 +60,10 @@ export default function Home() {
                     </CardTitle>
                 </CardHeader>
                  <CardContent className='grid grid-cols-2 gap-4'>
+                    <Link href="/plant-doctor" className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
+                        <Bot className="w-8 h-8 text-primary mb-2"/>
+                        <span className="text-sm font-semibold text-center">Plant Doctor</span>
+                     </Link>
                      <Link href="/assistant" className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
                         <MessageCircle className="w-8 h-8 text-primary mb-2"/>
                         <span className="text-sm font-semibold text-center">{t('ai_assistant')}</span>

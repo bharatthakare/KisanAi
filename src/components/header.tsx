@@ -12,6 +12,7 @@ export function Header() {
   const { t } = useLanguage();
   const navLinks = [
     { href: '/', label: t('home') },
+    { href: '/plant-doctor', label: 'Plant Doctor' },
     { href: '/assistant', label: t('ai_assistant') },
     { href: '/market', label: t('market') },
     { href: '/community', label: t('community') },
