@@ -59,40 +59,41 @@ export async function getForecastForCoords(lat: number, lon: number): Promise<We
     return data;
   }
   
-  // Filter for forecasts around noon (12:00) to get one per day.
-  const dailyForecasts = data.list.filter((item: any) => {
-    const itemDate = new Date(item.dt * 1000);
-    // Include the current day's forecast regardless of time, and then noon for subsequent days.
-    const isToday = itemDate.getDate() === new Date().getDate();
-    return isToday || itemDate.getHours() === 12;
+  const dailyForecasts: { [key: string]: any } = {};
+
+  data.list.forEach((item: any) => {
+    const date = new Date(item.dt * 1000).toISOString().split('T')[0];
+    if (!dailyForecasts[date]) {
+      dailyForecasts[date] = [];
+    }
+    dailyForecasts[date].push(item);
   });
 
-  // Remove duplicate days, keeping the first entry (which will be today or noon).
-  const uniqueDailyForecasts: any[] = [];
-  const seenDays = new Set<number>();
-  for (const item of dailyForecasts) {
-    const day = new Date(item.dt * 1000).getDate();
-    if (!seenDays.has(day)) {
-      uniqueDailyForecasts.push(item);
-      seenDays.add(day);
+  const fiveDayForecast: WeatherForecast[] = [];
+  const today = new Date().toISOString().split('T')[0];
+
+  Object.keys(dailyForecasts).sort().forEach(date => {
+    // Skip today's forecast as we already show current weather
+    if (date === today) {
+        return;
     }
-  }
 
-  // Ensure we skip today's entry from the list of 5 days if it's already represented
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    if (fiveDayForecast.length < 5) {
+      // Find the forecast closest to noon (12:00) for a representative daily forecast
+      let best_item = dailyForecasts[date].reduce((prev: any, curr: any) => {
+        const prev_hour = new Date(prev.dt * 1000).getUTCHours();
+        const curr_hour = new Date(curr.dt * 1000).getUTCHours();
+        return (Math.abs(curr_hour - 12) < Math.abs(prev_hour - 12) ? curr : prev);
+      });
 
-  return uniqueDailyForecasts
-    .filter(item => {
-        // Filter out past entries, ensuring we only show future forecasts
-        const itemDate = new Date(item.dt * 1000);
-        return itemDate >= today || itemDate.getDate() === today.getDate();
-    })
-    .slice(0, 5) // Take the next 5 days
-    .map((item: any) => ({
-      date: item.dt * 1000,
-      temp: Math.round(item.main.temp),
-      condition: item.weather[0].main,
-      icon: item.weather[0].icon,
-  }));
+      fiveDayForecast.push({
+        date: best_item.dt * 1000,
+        temp: Math.round(best_item.main.temp),
+        condition: best_item.weather[0].main,
+        icon: best_item.weather[0].icon,
+      });
+    }
+  });
+
+  return fiveDayForecast;
 }
