@@ -19,38 +19,38 @@ export function useWeather() {
     setLoading(true);
     setError(null);
     
-    const [weatherResult, forecastResult] = await Promise.all([
-        getWeatherForCoords(lat, lon),
-        getForecastForCoords(lat, lon)
-    ]);
+    try {
+      const [weatherResult, forecastResult] = await Promise.all([
+          getWeatherForCoords(lat, lon),
+          getForecastForCoords(lat, lon)
+      ]);
 
-    if ('error' in weatherResult) {
-      setError(weatherResult.error);
-      toast({
-        title: t('weather_error'),
-        description: weatherResult.error,
-        variant: "destructive",
-      });
-    } else {
-      setWeather(weatherResult);
+      if ('error' in weatherResult) {
+        throw new Error(weatherResult.error);
+      } else {
+        setWeather(weatherResult);
+      }
+      
+      if ('error' in forecastResult) {
+        throw new Error(forecastResult.error);
+      } else {
+          setForecast(forecastResult);
+      }
+    } catch(err: any) {
+        const errorMessage = err.message || "An unknown error occurred while fetching weather.";
+        setError(errorMessage);
+        toast({
+          title: t('weather_error'),
+          description: errorMessage,
+          variant: "destructive",
+        });
+    } finally {
+        setLoading(false);
     }
-    
-    if ('error' in forecastResult) {
-       setError(forecastResult.error);
-       toast({
-        title: t('weather_error'),
-        description: forecastResult.error,
-        variant: "destructive",
-      });
-    } else {
-        setForecast(forecastResult);
-    }
-
-    setLoading(false);
   }, [toast, t]);
 
   useEffect(() => {
-    if (!navigator.geolocation) {
+    if (typeof window === 'undefined' || !navigator.geolocation) {
       setError('Geolocation is not supported by your browser.');
       fetchWeatherData(FALLBACK_COORDINATES.lat, FALLBACK_COORDINATES.lon);
       return;
@@ -60,11 +60,13 @@ export function useWeather() {
       (position) => {
         fetchWeatherData(position.coords.latitude, position.coords.longitude);
       },
-      () => {
-        toast({
-            title: t('location_access_denied'),
-            description: t('fallback_location_weather'),
-        })
+      (geoError) => {
+        let title = t('weather_error');
+        let description = t('fallback_location_weather');
+        if (geoError.code === geoError.PERMISSION_DENIED) {
+            title = t('location_access_denied');
+        }
+        toast({ title, description });
         fetchWeatherData(FALLBACK_COORDINATES.lat, FALLBACK_COORDINATES.lon);
       }
     );

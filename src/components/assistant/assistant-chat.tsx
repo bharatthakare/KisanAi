@@ -100,7 +100,7 @@ export function AssistantChat() {
           {messages.map((message) => (
             <ChatMessage key={message.id} {...message} />
           ))}
-          {isLoading && <ChatMessage role="assistant" text="" isLoading={true} />}
+          {isLoading && <ChatMessage key="loading" role="assistant" text="" isLoading={true} />}
         </div>
       </ScrollArea>
       <div className="p-4 bg-background border-t">

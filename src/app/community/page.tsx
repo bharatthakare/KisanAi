@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/contexts/language-context';
 import { useState } from 'react';
 import type { CommunityPost } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function PostCard({ post }: { post: CommunityPost }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -76,9 +77,42 @@ function PostCard({ post }: { post: CommunityPost }) {
   );
 }
 
+function PostSkeleton() {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center gap-4">
+        <Skeleton className="h-10 w-10 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-3 w-16" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-4/5 mb-4" />
+        <Skeleton className="aspect-video w-full rounded-lg" />
+      </CardContent>
+      <CardFooter className="flex justify-between border-t pt-4">
+        <Skeleton className="h-8 w-20" />
+        <Skeleton className="h-8 w-24" />
+      </CardFooter>
+    </Card>
+  )
+}
+
 
 export default function CommunityPage() {
   const { t } = useLanguage();
+  const [loading, setLoading] = useState(true);
+
+  // Simulate data fetching
+  useState(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  });
+
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
       <div className="space-y-8">
@@ -102,9 +136,16 @@ export default function CommunityPage() {
 
         {/* Posts Feed */}
         <div className="space-y-6">
-          {communityPosts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+          {loading ? (
+            <>
+              <PostSkeleton />
+              <PostSkeleton />
+            </>
+          ) : (
+            communityPosts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))
+          )}
         </div>
       </div>
     </div>

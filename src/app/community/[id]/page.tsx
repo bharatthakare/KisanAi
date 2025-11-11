@@ -16,7 +16,7 @@ import { Heart, MessageCircle, Send, User, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import type { Comment } from '@/lib/types';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { placeholderImages } from '@/lib/placeholder-images';
 
 function CommentCard({ comment }: { comment: Comment }) {
@@ -64,11 +64,12 @@ function CommentCard({ comment }: { comment: Comment }) {
 export default function PostPage() {
   const params = useParams();
   const postId = params.id;
-  const post = communityPosts.find((p) => p.id === postId);
+  const post = useMemo(() => communityPosts.find((p) => p.id === postId), [postId]);
   
   const [isLiked, setIsLiked] = useState(false);
-  // Initialize like count from post, but manage it in state
   const [likeCount, setLikeCount] = useState(post?.likes ?? 0);
+  const [commentCount, setCommentCount] = useState(post?.comments.length ?? 0);
+
 
   const handleLike = () => {
     if (isLiked) {
@@ -136,7 +137,7 @@ export default function PostPage() {
           </Button>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
              <MessageCircle className="h-4 w-4 text-blue-500" />
-             {post.comments.length} Comments
+             {commentCount} Comments
           </div>
         </CardFooter>
       </Card>
