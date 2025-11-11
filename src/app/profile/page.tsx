@@ -37,6 +37,7 @@ import { doc } from 'firebase/firestore';
 import { signInAnonymously, updateProfile } from 'firebase/auth';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import type { UserProfile } from '@/lib/types';
 
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -61,9 +62,8 @@ export default function ProfilePage() {
     return doc(firestore, 'users', user.uid);
   }, [firestore, user]);
 
-  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userDocRef);
+  const { data: userProfile, isLoading: isProfileLoading } = useDoc<UserProfile>(userDocRef);
 
-  const [otpSent, setOtpSent] = useState(false);
   const [selectedState, setSelectedState] = useState(userProfile?.state || '');
   const districts = selectedState ? IndianStates.find(s => s.name === selectedState)?.districts : [];
 
@@ -100,8 +100,14 @@ export default function ProfilePage() {
     if (!user || !userDocRef) return;
 
     try {
+      const profileData: Partial<UserProfile> = {
+        ...values,
+        id: user.uid,
+        name: values.name
+      };
+
       // Update Firestore document
-      setDocumentNonBlocking(userDocRef, { ...values, id: user.uid }, { merge: true });
+      setDocumentNonBlocking(userDocRef, profileData, { merge: true });
 
       // Update auth profile if name changed
       if (user.displayName !== values.name) {

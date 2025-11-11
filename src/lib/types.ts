@@ -28,23 +28,33 @@ export type MarketPrice = {
   lon: number;
 };
 
+export type UserProfile = {
+  id: string;
+  name: string;
+  mobile?: string;
+  language?: string;
+  avatarUrl?: string;
+  state?: string;
+  district?: string;
+  village?: string;
+}
+
 export type Comment = {
   id: string;
-  author: string;
-  authorAvatar: string;
-  timestamp: string;
+  userId: string;
   content: string;
-  replies?: Comment[];
+  timestamp: any; // Firestore Timestamp
+  author?: UserProfile; // Populated client-side
 };
 
 export type CommunityPost = {
   id: string;
-  author: string;
-  authorAvatar: string;
-  timestamp: string;
+  userId: string;
   content: string;
   imageUrl?: string;
   imageHint?: string;
-  likes: number;
-  comments: Comment[];
+  timestamp: any; // Firestore Timestamp
+  likeCount: number;
+  commentCount: number;
+  author?: UserProfile; // Populated client-side
 };
