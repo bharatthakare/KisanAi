@@ -3,14 +3,17 @@
 import { WeatherForecastCard } from '@/components/weather-forecast-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { Lightbulb, MessageCircle, ShoppingCart, Users, Settings } from 'lucide-react';
+import { Lightbulb, MessageCircle, ShoppingCart, Users, Settings, Mic } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
 import { useUser } from '@/firebase';
 import Image from 'next/image';
+import { VoiceAssistant } from '@/components/assistant/voice-assistant';
+import { useState } from 'react';
 
 export default function Home() {
   const { t } = useLanguage();
   const { user, isUserLoading } = useUser();
+  const [isVoiceAssistantOpen, setIsVoiceAssistantOpen] = useState(false);
   
   const userName = user?.displayName || "Farmer"; 
 
@@ -61,6 +64,10 @@ export default function Home() {
                         <MessageCircle className="w-8 h-8 text-primary mb-2"/>
                         <span className="text-sm font-semibold text-center">{t('ai_assistant')}</span>
                      </Link>
+                     <button onClick={() => setIsVoiceAssistantOpen(true)} className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
+                        <Mic className="w-8 h-8 text-primary mb-2"/>
+                        <span className="text-sm font-semibold text-center">{t('voice_assistant')}</span>
+                     </button>
                      <Link href="/market" className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
                         <ShoppingCart className="w-8 h-8 text-primary mb-2"/>
                         <span className="text-sm font-semibold text-center">{t('market_prices')}</span>
@@ -77,6 +84,7 @@ export default function Home() {
             </Card>
         </aside>
       </div>
+      <VoiceAssistant open={isVoiceAssistantOpen} onOpenChange={setIsVoiceAssistantOpen} />
     </div>
   );
 }

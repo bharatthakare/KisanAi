@@ -37,6 +37,7 @@ const translations = {
     customize_your_app: 'Customize your app',
     daily_tip: 'Daily Tip',
     daily_tip_content: 'Check soil moisture before irrigating your fields. Over-watering can be as harmful as under-watering.',
+    voice_assistant: 'Voice Assistant',
     // Weather Card
     current_weather: 'Current Weather',
     weather_forecast: 'Weather Forecast',
@@ -79,6 +80,11 @@ const translations = {
     ask_me_anything: 'Ask me anything about farming!',
     ask_about_crops: 'Ask about crops, soil, or pests...',
     assistant_can_mistake: 'KisanAI can make mistakes. Consider checking important information.',
+    // Voice Assistant
+    voice_assistant_title: 'Voice Assistant',
+    listening: 'Listening...',
+    processing: 'Processing...',
+    ask_a_question: 'Ask a question about farming',
   },
   hi: {
     // General
@@ -105,6 +111,7 @@ const translations = {
     customize_your_app: 'अपने ऐप को कस्टमाइज़ करें',
     daily_tip: 'आज का सुझाव',
     daily_tip_content: 'अपने खेतों की सिंचाई करने से पहले मिट्टी की नमी की जाँच करें। ज़्यादा पानी देना भी कम पानी देने जितना ही हानिकारक हो सकता है।',
+    voice_assistant: 'आवाज सहायक',
     // Weather Card
     current_weather: 'वर्तमान मौसम',
     weather_forecast: 'मौसम पूर्वानुमान',
@@ -147,6 +154,11 @@ const translations = {
     ask_me_anything: 'मुझसे खेती के बारे में कुछ भी पूछें!',
     ask_about_crops: 'फसलों, मिट्टी, या कीटों के बारे में पूछें...',
     assistant_can_mistake: 'किसान-एआई गलतियाँ कर सकता है। महत्वपूर्ण जानकारी की जाँच करने पर विचार करें।',
+    // Voice Assistant
+    voice_assistant_title: 'आवाज सहायक',
+    listening: 'सुन रहा हूँ...',
+    processing: 'संसाधित हो रहा है...',
+    ask_a_question: 'खेती के बारे में एक प्रश्न पूछें',
   },
   mr: {
     // General
@@ -173,6 +185,7 @@ const translations = {
     customize_your_app: 'तुमचे ॲप सानुकूलित करा',
     daily_tip: 'आजचा सल्ला',
     daily_tip_content: 'आपल्या शेतात सिंचन करण्यापूर्वी जमिनीतील ओलावा तपासा. जास्त पाणी देणे हे कमी पाणी देण्याइतकेच हानिकारक असू शकते.',
+    voice_assistant: 'आवाज सहाय्यक',
     // Weather Card
     current_weather: 'सध्याचे हवामान',
     weather_forecast: 'हवामान अंदाज',
@@ -215,6 +228,11 @@ const translations = {
     ask_me_anything: 'मला शेतीबद्दल काहीही विचारा!',
     ask_about_crops: 'पिके, माती किंवा कीटकांबद्दल विचारा...',
     assistant_can_mistake: 'किसान-एआय चुका करू शकतो. महत्त्वाची माहिती तपासण्याचा विचार करा.',
+    // Voice Assistant
+    voice_assistant_title: 'आवाज सहाय्यक',
+    listening: 'ऐकत आहे...',
+    processing: 'प्रક્રિયા होत आहे...',
+    ask_a_question: 'शेतीबद्दल प्रश्न विचारा',
   },
   ta: {
     welcome: 'வரவேற்பு',
@@ -238,6 +256,7 @@ const translations = {
     customize_your_app: 'உங்கள் பயன்பாட்டைத் தனிப்பயனாக்குங்கள்',
     daily_tip: 'தினசரி உதவிக்குறிப்பு',
     daily_tip_content: 'உங்கள் வயல்களுக்கு நீர்ப்பாசனம் செய்வதற்கு முன் மண் ஈரப்பதத்தைச் சரிபார்க்கவும். அதிகப்படியான నీటిపారుదల తక్కువ నీటిపారుదల వలె హానికరం.',
+    voice_assistant: 'குரல் உதவியாளர்',
     current_weather: 'தற்போதைய வானிலை',
     weather_forecast: 'வானிலை முன்னறிவிப்பு',
     today: 'இன்று',
@@ -274,6 +293,10 @@ const translations = {
     ask_me_anything: 'விவசாயம் பற்றி என்னிடம் எதுவும் கேளுங்கள்!',
     ask_about_crops: 'பயிர்கள், மண் அல்லது பூச்சிகள் பற்றி கேளுங்கள்...',
     assistant_can_mistake: 'கிசான்ஏஐ தவறுகள் செய்யலாம். முக்கியமான தகவல்களைச் சரிபார்க்கவும்.',
+    voice_assistant_title: 'குரல் உதவியாளர்',
+    listening: 'கேட்டுக்கொண்டிருக்கிறது...',
+    processing: 'செயலாக்கப்படுகிறது...',
+    ask_a_question: 'விவசாயம் பற்றி ஒரு கேள்வி கேளுங்கள்',
   },
   te: {
     welcome: 'స్వాగతం',
@@ -297,6 +320,7 @@ const translations = {
     customize_your_app: 'మీ అనువర్తనాన్ని అనుకూలీకరించండి',
     daily_tip: 'రోజువారీ చిట్కా',
     daily_tip_content: 'మీ పొలాలకు నీరు పెట్టే ముందు నేల తేమను తనిఖీ చేయండి. ఎక్కువ నీరు పెట్టడం కూడా తక్కువ నీరు పెట్టడం అంత హానికరం.',
+    voice_assistant: 'వాయిస్ అసిస్టెంట్',
     current_weather: 'ప్రస్తుత వాతావరణం',
     weather_forecast: 'వాతావరణ సూచన',
     today: 'ఈ రోజు',
@@ -333,6 +357,10 @@ const translations = {
     ask_me_anything: 'వ్యవసాయం గురించి నన్ను ఏదైనా అడగండి!',
     ask_about_crops: 'పంటలు, నేల లేదా తెగుళ్ళ గురించి అడగండి...',
     assistant_can_mistake: 'కిసాన్‌ఏఐ తప్పులు చేయవచ్చు. ముఖ్యమైన సమాచారాన్ని తనిఖీ చేయడాన్ని పరిగణించండి.',
+    voice_assistant_title: 'వాయిస్ అసిస్టెంట్',
+    listening: 'వింటున్నాను...',
+    processing: 'ప్రాసెస్ చేస్తోంది...',
+    ask_a_question: 'వ్యవసాయం గురించి ఒక ప్రశ్న అడగండి',
   },
   kn: {
     welcome: 'ಸ್ವಾಗತ',
@@ -356,6 +384,7 @@ const translations = {
     customize_your_app: 'ನಿಮ್ಮ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ',
     daily_tip: 'ದೈನಂದಿನ ಸಲಹೆ',
     daily_tip_content: 'ನಿಮ್ಮ ಹೊಲಗಳಿಗೆ ನೀರುಣಿಸುವ ಮೊದಲು ಮಣ್ಣಿನ ತೇವಾಂಶವನ್ನು ಪರೀಕ್ಷಿಸಿ. ಹೆಚ್ಚು ನೀರುಣಿಸುವುದು ಕಡಿಮೆ ನೀರುಣಿಸುವಷ್ಟೇ ಹಾನಿಕಾರಕ.',
+    voice_assistant: 'ಧ್ವನಿ ಸಹಾಯಕ',
     current_weather: 'ಪ್ರಸ್ತುತ ಹವಾಮಾನ',
     weather_forecast: 'ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ',
     today: 'ಇಂದು',
@@ -392,6 +421,10 @@ const translations = {
     ask_me_anything: 'ಕೃಷಿ ಬಗ್ಗೆ ನನ್ನನ್ನು ಏನು ಬೇಕಾದರೂ ಕೇಳಿ!',
     ask_about_crops: 'ಬೆಳೆಗಳು, ಮಣ್ಣು, ಅಥವಾ ಕೀಟಗಳ ಬಗ್ಗೆ ಕೇಳಿ...',
     assistant_can_mistake: 'ಕಿಸಾನ್‌ಎಐ ತಪ್ಪುಗಳನ್ನು ಮಾಡಬಹುದು. ಪ್ರಮುಖ ಮಾಹಿತಿಯನ್ನು ಪರಿಶೀಲಿಸುವುದನ್ನು ಪರಿಗಣಿಸಿ.',
+    voice_assistant_title: 'ಧ್ವನಿ ಸಹಾಯಕ',
+    listening: 'ಕೇಳುತ್ತಿದೆ...',
+    processing: 'ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ...',
+    ask_a_question: 'ಕೃಷಿ ಬಗ್ಗೆ ಪ್ರಶ್ನೆ ಕೇಳಿ',
   },
   bn: {
     welcome: 'স্বাগত',
@@ -415,6 +448,7 @@ const translations = {
     customize_your_app: 'আপনার অ্যাপটি কাস্টমাইজ করুন',
     daily_tip: 'দৈনিক টিপ',
     daily_tip_content: 'আপনার জমিতে সেচ দেওয়ার আগে মাটির আর্দ্রতা পরীক্ষা করুন। অতিরিক্ত জল দেওয়া কম জল দেওয়ার মতোই ক্ষতিকর হতে পারে।',
+    voice_assistant: 'ভয়েস সহকারী',
     current_weather: 'বর্তমান আবহাওয়া',
     weather_forecast: 'আবহাওয়ার পূর্বাভাস',
     today: 'আজ',
@@ -451,6 +485,10 @@ const translations = {
     ask_me_anything: 'চাষাবাদ সম্পর্কে আমাকে কিছু জিজ্ঞাসা করুন!',
     ask_about_crops: 'ফসল, মাটি বা কীটপতঙ্গ সম্পর্কে জিজ্ঞাসা করুন...',
     assistant_can_mistake: 'কিসানএআই ভুল করতে পারে। গুরুত্বপূর্ণ তথ্য পরীক্ষা করার কথা বিবেচনা করুন।',
+    voice_assistant_title: 'ভয়েস সহকারী',
+    listening: 'শুনছি...',
+    processing: 'প্রসেস করা হচ্ছে...',
+    ask_a_question: 'চাষাবাদ সম্পর্কে একটি প্রশ্ন জিজ্ঞাসা করুন',
   },
   pa: {
     welcome: 'ਜੀ ਆਇਆਂ ਨੂੰ',
@@ -474,6 +512,7 @@ const translations = {
     customize_your_app: 'ਆਪਣੀ ਐਪ ਨੂੰ ਅਨੁਕੂਲਿਤ ਕਰੋ',
     daily_tip: 'ਰੋਜ਼ਾਨਾ ਸੁਝਾਅ',
     daily_tip_content: 'ਆਪਣੇ ਖੇਤਾਂ ਨੂੰ ਸਿੰਜਾਈ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਮਿੱਟੀ ਦੀ ਨਮੀ ਦੀ ਜਾਂਚ ਕਰੋ। ਵੱਧ ਪਾਣੀ ਦੇਣਾ ਘੱਟ ਪਾਣੀ ਦੇਣ ਵਾਂਗ ਹੀ ਨੁਕਸਾਨਦੇਹ ਹੋ ਸਕਦਾ ਹੈ।',
+    voice_assistant: 'ਆਵਾਜ਼ ਸਹਾਇਕ',
     current_weather: 'ਮੌਜੂਦਾ ਮੌਸਮ',
     weather_forecast: 'ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ',
     today: 'ਅੱਜ',
@@ -510,6 +549,10 @@ const translations = {
     ask_me_anything: 'ਖੇਤੀਬਾੜੀ ਬਾਰੇ ਮੈਨੂੰ ਕੁਝ ਵੀ ਪੁੱਛੋ!',
     ask_about_crops: 'ਫਸਲਾਂ, ਮਿੱਟੀ, ਜਾਂ ਕੀੜਿਆਂ ਬਾਰੇ ਪੁੱਛੋ...',
     assistant_can_mistake: 'ਕਿਸਾਨਏਆਈ ਗਲਤੀਆਂ ਕਰ ਸਕਦਾ ਹੈ। ਮਹੱਤਵਪੂਰਨ ਜਾਣਕਾਰੀ ਦੀ ਜਾਂਚ ਕਰਨ ਬਾਰੇ ਸੋਚੋ।',
+    voice_assistant_title: 'ਆਵਾਜ਼ ਸਹਾਇਕ',
+    listening: 'ਸੁਣ ਰਿਹਾ ਹਾਂ...',
+    processing: 'ਪ੍ਰੋਸੈਸਿੰਗ ਹੋ ਰਹੀ ਹੈ...',
+    ask_a_question: 'ਖੇਤੀਬਾੜੀ ਬਾਰੇ ਇੱਕ ਸਵਾਲ ਪੁੱਛੋ',
   },
   gu: {
     welcome: 'પધારો',
@@ -533,6 +576,7 @@ const translations = {
     customize_your_app: 'તમારી એપ્લિકેશનને કસ્ટમાઇઝ કરો',
     daily_tip: 'દૈનિક ટીપ',
     daily_tip_content: 'તમારા ખેતરોમાં સિંચાઈ કરતા પહેલા જમીનની ભેજ તપાસો. વધુ પડતું પાણી આપવું એ ઓછું પાણી આપવા જેટલું જ હાનિકારક હોઈ શકે છે.',
+    voice_assistant: 'વૉઇસ સહાયક',
     current_weather: 'વર્તમાન હવામાન',
     weather_forecast: 'હવામાનની આગાહી',
     today: 'આજે',
@@ -569,6 +613,10 @@ const translations = {
     ask_me_anything: 'ખેતી વિશે મને કંઈપણ પૂછો!',
     ask_about_crops: 'પાક, જમીન અથવા જીવાતો વિશે પૂછો...',
     assistant_can_mistake: 'કિસાનએઆઈ ભૂલો કરી શકે છે. મહત્વપૂર્ણ માહિતી તપાસવાનું વિચારો.',
+    voice_assistant_title: 'વૉઇસ સહાયક',
+    listening: 'સાંભળી રહ્યું છે...',
+    processing: 'પ્રક્રિયા કરી રહ્યું છે...',
+    ask_a_question: 'ખેતી વિશે એક પ્રશ્ન પૂછો',
   },
 };
 
