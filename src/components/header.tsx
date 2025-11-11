@@ -22,7 +22,6 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Logo className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block font-headline">KisanAI</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -47,7 +46,6 @@ export function Header() {
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
             <Link href="/" className="mr-6 flex items-center space-x-2">
-                <Logo className="h-6 w-6 text-primary" />
                 <span className="font-bold font-headline">KisanAI</span>
             </Link>
             <div className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
