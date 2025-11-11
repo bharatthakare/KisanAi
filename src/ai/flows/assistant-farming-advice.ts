@@ -27,8 +27,6 @@ export async function askAssistant(input: AssistantInput): Promise<AssistantOutp
   return assistantFlow(input);
 }
 
-const model = process.env.GEMINI_MODEL ?? 'gemini-2.0-flash';
-
 const prompt = ai.definePrompt({
   name: 'assistantPrompt',
   input: {schema: AssistantInputSchema},
@@ -38,7 +36,6 @@ const prompt = ai.definePrompt({
 Weather: {{{weather}}}
 
 Question: {{{question}}}`,
-  model,
 });
 
 const assistantFlow = ai.defineFlow(
