@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Camera, Upload, Mic, Bot, AlertTriangle, ArrowLeft, Lightbulb, ShieldCheck, TestTube2, Image as ImageIcon } from 'lucide-react';
+import { Loader2, Camera, Upload, Mic, Bot, AlertTriangle, ArrowLeft, Lightbulb, ShieldCheck, TestTube2, Image as ImageIcon, Video } from 'lucide-react';
 import { useLanguage } from '@/contexts/language-context';
 import { useWeather } from '@/hooks/use-weather';
 import { plantDoctor, type PlantDoctorOutput, type PlantDoctorInput } from '@/ai/flows/plant-doctor-flow';
@@ -15,6 +15,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 type Status = 'idle' | 'recording' | 'processing' | 'success' | 'error';
 type View = 'capture' | 'result';
+type CaptureMode = 'none' | 'camera' | 'upload';
 
 export default function PlantDoctorPage() {
   const { t, language } = useLanguage();
@@ -30,43 +31,52 @@ export default function PlantDoctorPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const recognitionRef = useRef<any>(null);
-  const [hasCameraPermission, setHasCameraPermission] = useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const [captureMode, setCaptureMode] = useState<CaptureMode>('none');
+
+  const stopCamera = useCallback(() => {
+    if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+        videoRef.current.srcObject = null;
+    }
+  }, []);
+
+  const startCamera = async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      toast({
+        variant: 'destructive',
+        title: 'Camera Not Supported',
+        description: 'Your browser does not support camera access.',
+      });
+      setHasCameraPermission(false);
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setHasCameraPermission(true);
+      setCaptureMode('camera');
+      setImageSrc(null);
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      setHasCameraPermission(false);
+      setCaptureMode('none');
+      toast({
+        variant: 'destructive',
+        title: 'Camera Access Denied',
+        description: 'Please enable camera permissions in your browser settings to use this feature.',
+      });
+    }
+  }
 
   useEffect(() => {
-    async function getCameraPermission() {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        toast({
-          variant: 'destructive',
-          title: 'Camera Not Supported',
-          description: 'Your browser does not support camera access.',
-        });
-        return;
-      }
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-        setHasCameraPermission(true);
-      } catch (error) {
-        console.error('Error accessing camera:', error);
-        setHasCameraPermission(false);
-        toast({
-          variant: 'destructive',
-          title: 'Camera Access Denied',
-          description: 'Please enable camera permissions to use this feature.',
-        });
-      }
-    }
-    getCameraPermission();
-
     return () => {
-        if (videoRef.current && videoRef.current.srcObject) {
-            const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-        }
+        stopCamera();
     };
-  }, [toast]);
+  }, [stopCamera]);
   
   const handleCapture = () => {
     if (videoRef.current && canvasRef.current) {
@@ -79,6 +89,8 @@ export default function PlantDoctorPage() {
         context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
         const dataUrl = canvas.toDataURL('image/jpeg');
         setImageSrc(dataUrl);
+        setCaptureMode('none');
+        stopCamera();
       }
     }
   };
@@ -88,6 +100,8 @@ export default function PlantDoctorPage() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setImageSrc(e.target?.result as string);
+        setCaptureMode('upload');
+        stopCamera();
       };
       reader.readAsDataURL(event.target.files[0]);
     }
@@ -127,7 +141,7 @@ export default function PlantDoctorPage() {
 
   const handleDiagnose = async () => {
     if (!imageSrc) {
-      toast({ title: 'No Image', description: 'Please capture or upload an image first.', variant: 'destructive' });
+      toast({ title: 'No Image', description: 'Please provide an image first.', variant: 'destructive' });
       return;
     }
     
@@ -162,6 +176,8 @@ export default function PlantDoctorPage() {
     setImageSrc(null);
     setTranscript('');
     setResult(null);
+    setCaptureMode('none');
+    stopCamera();
   }
 
   if (view === 'result' && result) {
@@ -174,6 +190,11 @@ export default function PlantDoctorPage() {
                     <CardDescription>Confidence: {Math.round(result.confidence * 100)}% - {result.disclaimer}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                    {imageSrc && (
+                         <div className="relative aspect-video w-full bg-muted rounded-lg overflow-hidden">
+                            <Image src={imageSrc} alt="Diagnosed plant" fill className="object-contain" />
+                         </div>
+                    )}
                     {result.speakableSummary && (
                         <Alert className="bg-primary/10 border-primary/20">
                             <Lightbulb className="h-4 w-4 text-primary" />
@@ -251,31 +272,45 @@ export default function PlantDoctorPage() {
           <div className="space-y-4">
             <h3 className="font-semibold text-lg">1. Provide an Image</h3>
             <div className="relative aspect-video w-full bg-muted rounded-lg overflow-hidden flex items-center justify-center">
-              {imageSrc ? (
-                <Image src={imageSrc} alt="Captured plant" fill className="object-contain" />
-              ) : (
-                <div className="w-full h-full">
-                  <video ref={videoRef} className="w-full h-full object-cover" autoPlay muted playsInline />
-                  {!hasCameraPermission && (
-                     <Alert variant="destructive" className="absolute bottom-4 left-4 right-4">
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertTitle>Camera Access Required</AlertTitle>
-                        <AlertDescription>
-                            Please allow camera access to use this feature.
-                        </AlertDescription>
-                    </Alert>
-                  )}
+              {imageSrc && captureMode !== 'camera' && (
+                <Image src={imageSrc} alt="Uploaded plant" fill className="object-contain" />
+              )}
+              {captureMode === 'camera' && (
+                <video ref={videoRef} className="w-full h-full object-cover" autoPlay muted playsInline />
+              )}
+              {captureMode === 'none' && !imageSrc && (
+                <div className="text-center text-muted-foreground p-4">
+                   <ImageIcon className="mx-auto h-12 w-12 mb-2" />
+                   <p>Use your camera or upload an image to begin.</p>
                 </div>
               )}
                <canvas ref={canvasRef} className="hidden"></canvas>
             </div>
+            
+            {hasCameraPermission === false && (
+                <Alert variant="destructive">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertTitle>Camera Access Denied</AlertTitle>
+                    <AlertDescription>
+                        Please enable camera permissions in your browser settings to use this feature.
+                    </AlertDescription>
+                </Alert>
+            )}
+
             <div className="flex gap-2 justify-center">
-                <Button onClick={handleCapture} disabled={!hasCameraPermission || status === 'processing'}>
-                    <Camera className="mr-2 h-4 w-4" /> Capture
-                </Button>
+                {captureMode === 'camera' ? (
+                     <Button onClick={handleCapture} disabled={!hasCameraPermission || status === 'processing'}>
+                        <Camera className="mr-2 h-4 w-4" /> Capture Photo
+                    </Button>
+                ) : (
+                    <Button onClick={startCamera} disabled={status === 'processing'}>
+                        <Video className="mr-2 h-4 w-4" /> Use Camera
+                    </Button>
+                )}
+               
                 <Button asChild variant="outline" disabled={status === 'processing'}>
                     <label htmlFor="upload-button" className="flex items-center cursor-pointer">
-                        <Upload className="mr-2 h-4 w-4" /> Upload
+                        <Upload className="mr-2 h-4 w-4" /> Upload Image
                         <input id="upload-button" type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                     </label>
                 </Button>
