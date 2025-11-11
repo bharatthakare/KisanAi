@@ -62,7 +62,7 @@ export default function Home() {
                  <CardContent className='grid grid-cols-2 gap-4'>
                     <Link href="/plant-doctor" className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
                         <Bot className="w-8 h-8 text-primary mb-2"/>
-                        <span className="text-sm font-semibold text-center">Plant Doctor</span>
+                        <span className="text-sm font-semibold text-center">{t('plant_doctor')}</span>
                      </Link>
                      <Link href="/assistant" className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
                         <MessageCircle className="w-8 h-8 text-primary mb-2"/>

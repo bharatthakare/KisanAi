@@ -18,9 +18,11 @@ import { useParams } from 'next/navigation';
 import type { Comment } from '@/lib/types';
 import { useState, useMemo } from 'react';
 import { placeholderImages } from '@/lib/placeholder-images';
+import { useLanguage } from '@/contexts/language-context';
 
 function CommentCard({ comment }: { comment: Comment }) {
   const [showReply, setShowReply] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <div className="flex gap-4">
@@ -35,7 +37,7 @@ function CommentCard({ comment }: { comment: Comment }) {
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
           <span>{comment.timestamp}</span>
-          <button className="font-semibold" onClick={() => setShowReply(!showReply)}>Reply</button>
+          <button className="font-semibold" onClick={() => setShowReply(!showReply)}>{t('reply')}</button>
         </div>
 
         {comment.replies && comment.replies.length > 0 && (
@@ -48,7 +50,7 @@ function CommentCard({ comment }: { comment: Comment }) {
           <Card className="mt-2">
             <CardContent className="p-2">
               <div className="flex gap-2">
-                <Textarea placeholder={`Reply to ${comment.author}...`} className="text-sm" />
+                <Textarea placeholder={`${t('reply_to')} ${comment.author}...`} className="text-sm" />
                 <Button size="sm">
                   <Send className="h-4 w-4" />
                 </Button>
@@ -65,6 +67,7 @@ export default function PostPage() {
   const params = useParams();
   const postId = params.id;
   const post = useMemo(() => communityPosts.find((p) => p.id === postId), [postId]);
+  const { t } = useLanguage();
   
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likes ?? 0);
@@ -84,9 +87,9 @@ export default function PostPage() {
   if (!post) {
     return (
       <div className="container mx-auto max-w-3xl px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold">Post not found</h1>
+        <h1 className="text-2xl font-bold">{t('post_not_found')}</h1>
         <Button asChild variant="link">
-          <Link href="/community">Back to community</Link>
+          <Link href="/community">{t('back_to_community')}</Link>
         </Button>
       </div>
     );
@@ -98,7 +101,7 @@ export default function PostPage() {
           <Button asChild variant="ghost" size="sm">
             <Link href="/community" className='flex items-center gap-2'>
               <ArrowLeft className="h-4 w-4" />
-              Back to Community
+              {t('back_to_community')}
             </Link>
           </Button>
       </div>
@@ -133,23 +136,23 @@ export default function PostPage() {
               className="h-4 w-4 text-red-500"
               fill={isLiked ? "currentColor" : "none"}
             />
-            {likeCount} Likes
+            {likeCount} {t('likes')}
           </Button>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
              <MessageCircle className="h-4 w-4 text-blue-500" />
-             {commentCount} Comments
+             {commentCount} {t('comments')}
           </div>
         </CardFooter>
       </Card>
       
       {/* Comments Section */}
       <div className="mt-8">
-        <h2 className="text-xl font-bold mb-4">Comments</h2>
+        <h2 className="text-xl font-bold mb-4">{t('comments')}</h2>
         <div className='space-y-6'>
             {/* Add new comment */}
             <Card>
                 <CardHeader>
-                    <h3 className='font-semibold'>Leave a comment</h3>
+                    <h3 className='font-semibold'>{t('leave_a_comment')}</h3>
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-start gap-4">
@@ -158,10 +161,10 @@ export default function PostPage() {
                             <AvatarFallback><User /></AvatarFallback>
                         </Avatar>
                         <div className="flex-1 grid w-full gap-2">
-                            <Textarea placeholder="Write your comment..." />
+                            <Textarea placeholder={t('write_your_comment')} />
                             <Button className='justify-self-end'>
                                 <Send className="mr-2 h-4 w-4" />
-                                Comment
+                                {t('comment')}
                             </Button>
                         </div>
                     </div>

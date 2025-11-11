@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -108,14 +109,14 @@ export default function ProfilePage() {
       }
 
       toast({
-        title: 'Profile Updated',
-        description: 'Your profile has been saved successfully.',
+        title: t('profile_updated_title'),
+        description: t('profile_updated_description'),
       });
     } catch (error: any) {
       console.error('Error saving profile:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Could not save profile.',
+        description: error.message || t('could_not_save_profile'),
         variant: 'destructive',
       });
     }
@@ -126,8 +127,8 @@ export default function ProfilePage() {
     signInAnonymously(auth).catch(error => {
        console.error("Anonymous sign in error", error);
        toast({
-           title: "Login Failed",
-           description: "Could not sign you in. Please try again.",
+           title: t('login_failed'),
+           description: t('login_failed_description'),
            variant: "destructive"
        })
     });
@@ -174,7 +175,7 @@ export default function ProfilePage() {
                   name="state"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>State</FormLabel>
+                      <FormLabel>{t('state')}</FormLabel>
                       <Select
                         onValueChange={(value) => {
                           field.onChange(value);
@@ -185,7 +186,7 @@ export default function ProfilePage() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select your state" />
+                            <SelectValue placeholder={t('select_state')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -203,11 +204,11 @@ export default function ProfilePage() {
                   name="district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>District</FormLabel>
+                      <FormLabel>{t('district')}</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value} disabled={!selectedState}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select your district" />
+                            <SelectValue placeholder={t('select_district')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -225,9 +226,9 @@ export default function ProfilePage() {
                   name="village"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Village / Town</FormLabel>
+                      <FormLabel>{t('village_town')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your village or town name" {...field} />
+                        <Input placeholder={t('enter_village_town')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -235,7 +236,7 @@ export default function ProfilePage() {
                 />
                 <Button type="submit" className="w-full" disabled={profileForm.formState.isSubmitting}>
                   {profileForm.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Save Changes
+                  {t('save_changes')}
                 </Button>
               </form>
             </Form>
