@@ -31,10 +31,12 @@ const prompt = ai.definePrompt({
   name: 'assistantPrompt',
   input: {schema: AssistantInputSchema},
   output: {schema: AssistantOutputSchema},
-  prompt: `You are KisanAI. Based on the user’s question, current weather, give short, actionable farming advice in the selected language ({language}).
+  system: `You are KisanAI, an expert farming assistant. Your goal is to provide short, actionable farming advice.
+Respond in the language specified by the user.`,
+  prompt: `Based on the user’s question and current weather, provide your advice.
 
 Weather: {{{weather}}}
-
+Language: {{{language}}}
 Question: {{{question}}}`,
 });
 

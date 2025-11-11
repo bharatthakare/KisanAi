@@ -32,7 +32,13 @@ export async function voiceAssistant(input: VoiceAssistantInput): Promise<VoiceA
 const advicePrompt = ai.definePrompt({
   name: 'voiceAdvicePrompt',
   input: { schema: VoiceAssistantInputSchema },
-  prompt: `You are KisanAI. Based on the user’s question and current weather, give short, actionable farming advice in the selected language.\n\nUser's Question: {{{query}}}\nCurrent Weather: {{{weather}}}\nLanguage: {{{language}}}`,
+  system: `You are KisanAI, an expert farming assistant. Your goal is to provide short, actionable farming advice.
+Respond in the language specified by the user.`,
+  prompt: `Based on the user’s question and current weather, provide your advice.
+
+User's Question: {{{query}}}
+Current Weather: {{{weather}}}
+Language: {{{language}}}`,
 });
 
 const voiceAssistantFlow = ai.defineFlow(

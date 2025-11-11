@@ -32,7 +32,13 @@ export async function assistantSpeaksAdvice(input: AssistantSpeaksAdviceInput): 
 const advicePrompt = ai.definePrompt({
   name: 'advicePrompt',
   input: { schema: AssistantSpeaksAdviceInputSchema },
-  prompt: `You are KisanAI. Based on the user’s question and current weather, give short, actionable farming advice in the selected language.\n\nUser's Question: {{{query}}}\nCurrent Weather: {{{weather}}}\nLanguage: {{{language}}}`,
+  system: `You are KisanAI, an expert farming assistant. Your goal is to provide short, actionable farming advice.
+Respond in the language specified by the user.`,
+  prompt: `Based on the user’s question and current weather, provide your advice.
+
+User's Question: {{{query}}}
+Current Weather: {{{weather}}}
+Language: {{{language}}}`,
 });
 
 const assistantSpeaksAdviceFlow = ai.defineFlow(
