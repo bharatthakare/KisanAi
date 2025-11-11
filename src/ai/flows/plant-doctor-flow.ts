@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A plant problem diagnosis AI agent.
@@ -10,7 +11,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const PlantDoctorInputSchema = z.object({
+const PlantDoctorInputSchema = z.object({
   photoDataUri: z
     .string()
     .describe(
@@ -26,7 +27,7 @@ export const PlantDoctorInputSchema = z.object({
 });
 export type PlantDoctorInput = z.infer<typeof PlantDoctorInputSchema>;
 
-export const PlantDoctorOutputSchema = z.object({
+const PlantDoctorOutputSchema = z.object({
   plantIdentification: z.object({
     primarySpecies: z.object({
       name: z.string().nullable(),
