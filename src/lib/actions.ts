@@ -1,3 +1,4 @@
+
 'use server';
 
 import type { WeatherData, WeatherForecast } from '@/lib/types';
@@ -58,16 +59,37 @@ export async function getForecastForCoords(lat: number, lon: number): Promise<We
     return data;
   }
   
-  // Group by day and get the noon forecast for each day
-  const dailyForecasts: { [key: string]: any } = {};
-  data.list.forEach((item: any) => {
-    const date = new Date(item.dt * 1000).toISOString().split('T')[0];
-    if (!dailyForecasts[date] || new Date(item.dt_txt).getHours() === 12) {
-       dailyForecasts[date] = item;
-    }
+  // Filter for forecasts around noon (12:00) to get one per day.
+  const dailyForecasts = data.list.filter((item: any) => {
+    const itemDate = new Date(item.dt * 1000);
+    // Include the current day's forecast regardless of time, and then noon for subsequent days.
+    const isToday = itemDate.getDate() === new Date().getDate();
+    return isToday || itemDate.getHours() === 12;
   });
 
-  return Object.values(dailyForecasts).slice(0, 5).map((item: any) => ({
+  // Remove duplicate days, keeping the first entry (which will be today or noon).
+  const uniqueDailyForecasts: any[] = [];
+  const seenDays = new Set<number>();
+  for (const item of dailyForecasts) {
+    const day = new Date(item.dt * 1000).getDate();
+    if (!seenDays.has(day)) {
+      uniqueDailyForecasts.push(item);
+      seenDays.add(day);
+    }
+  }
+
+  // Ensure we skip today's entry from the list of 5 days if it's already represented
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return uniqueDailyForecasts
+    .filter(item => {
+        // Filter out past entries, ensuring we only show future forecasts
+        const itemDate = new Date(item.dt * 1000);
+        return itemDate >= today || itemDate.getDate() === today.getDate();
+    })
+    .slice(0, 5) // Take the next 5 days
+    .map((item: any) => ({
       date: item.dt * 1000,
       temp: Math.round(item.main.temp),
       condition: item.weather[0].main,
