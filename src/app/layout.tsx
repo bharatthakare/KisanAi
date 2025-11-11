@@ -30,6 +30,9 @@ export default function RootLayout({
             <div className="relative flex min-h-screen flex-col">
               <Header />
               <main className="flex-1">{children}</main>
+              <footer className="py-6 text-center text-sm text-muted-foreground">
+                © {new Date().getFullYear()} Bharatthakare
+              </footer>
             </div>
             <Toaster />
           </FirebaseClientProvider>
