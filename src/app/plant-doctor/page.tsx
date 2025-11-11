@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
@@ -9,7 +10,6 @@ import { useLanguage } from '@/contexts/language-context';
 import { useWeather } from '@/hooks/use-weather';
 import { plantDoctor, type PlantDoctorOutput, type PlantDoctorInput } from '@/ai/flows/plant-doctor-flow';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
@@ -271,11 +271,11 @@ export default function PlantDoctorPage() {
             </div>
             <div className="flex gap-2 justify-center">
                 <Button onClick={handleCapture} disabled={!hasCameraPermission || status === 'processing'}>
-                    <Camera className="mr-2" /> Capture
+                    <Camera className="mr-2 h-4 w-4" /> Capture
                 </Button>
                 <Button asChild variant="outline" disabled={status === 'processing'}>
-                    <label htmlFor="upload-button">
-                        <Upload className="mr-2" /> Upload
+                    <label htmlFor="upload-button" className="flex items-center cursor-pointer">
+                        <Upload className="mr-2 h-4 w-4" /> Upload
                         <input id="upload-button" type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                     </label>
                 </Button>
@@ -292,20 +292,22 @@ export default function PlantDoctorPage() {
                     disabled={status === 'processing'}
                     className="rounded-full w-12 h-12"
                 >
-                    <Mic />
+                    <Mic className="h-5 w-5" />
                 </Button>
-                <div className="w-full p-2 h-12 border rounded-md bg-muted/50 text-sm text-muted-foreground">
+                <div className="w-full p-2 h-12 border rounded-md bg-muted/50 text-sm text-muted-foreground flex items-center">
                     {status === 'recording' && <span className="text-primary animate-pulse">Listening...</span>}
-                    {transcript}
+                    {transcript || <span className="italic">Your transcribed voice note will appear here...</span>}
                 </div>
             </div>
           </div>
 
           <Button size="lg" className="w-full font-bold text-lg" onClick={handleDiagnose} disabled={!imageSrc || status === 'processing' || status === 'recording'}>
-            {status === 'processing' ? <><Loader2 className="mr-2 animate-spin" /> Diagnosing...</> : 'Get Diagnosis'}
+            {status === 'processing' ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Diagnosing...</> : 'Get Diagnosis'}
           </Button>
         </CardContent>
       </Card>
     </div>
   );
 }
+
+    
